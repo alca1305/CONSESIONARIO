@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="R&M Sportwagen - Concesionario de automoviles de prestigio en Mostoles, Madrid. Vehiculos premium, asesoramiento experto y confianza total.">
   <title>R&M Sportwagen | Tu coche ideal en Mostoles</title>
   <link rel="icon" href="favicon.ico">
@@ -1192,7 +1192,15 @@
     }
 
     @media (max-width: 920px) {
+      .listing-page {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+
       .listing-head {
+        position: sticky;
+        top: 0;
+        z-index: 9;
         grid-template-columns: 1fr;
         gap: 0.55rem;
         align-items: stretch;
@@ -1210,9 +1218,24 @@
         justify-content: center;
       }
 
+      .listing-stepper {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .listing-stepper .btn-ghost-small {
+        width: 100%;
+      }
+
       .listing-nav-cluster {
-        flex-wrap: wrap;
-        overflow: visible;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        overflow: hidden;
         padding-bottom: 0;
       }
 
@@ -1223,7 +1246,7 @@
       }
 
       .listing-inner-wrap {
-        padding: 0.72rem;
+        padding: 0.72rem 0.72rem 1rem;
       }
 
       .listing-layout {
@@ -1235,13 +1258,21 @@
       }
 
       .listing-thumbs {
-        gap: 0.38rem;
-        max-height: 132px;
+        flex-wrap: nowrap;
+        gap: 0.4rem;
+        max-height: none;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-bottom: 0.35rem;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
       }
 
       .listing-thumbs img {
-        width: 70px;
-        height: 52px;
+        width: 78px;
+        height: 58px;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
       }
 
       .listing-arrow {
@@ -1259,6 +1290,7 @@
       .listing-info-block {
         border-radius: 14px;
         padding: 0.88rem;
+        overflow: hidden;
       }
 
       .listing-info-block .detail-tabpanel {
@@ -1267,6 +1299,12 @@
 
       .detail-tabbar {
         margin: 0.65rem 0 0.52rem;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: rgba(16, 16, 16, 0.96);
+        backdrop-filter: blur(6px);
+        padding-block: 0.3rem;
       }
 
       .detail-tabc {
@@ -1290,7 +1328,7 @@
         background: rgba(9, 9, 9, 0.95);
         margin-inline: -0.88rem;
         margin-bottom: -0.88rem;
-        padding: 0.82rem;
+        padding: 0.82rem 0.82rem calc(0.82rem + env(safe-area-inset-bottom));
         border-top: 1px solid rgba(232, 198, 109, 0.2);
       }
 
@@ -1934,6 +1972,21 @@
 
       .cars-grid {
         grid-template-columns: 1fr;
+      }
+
+      .listing-media .listing-hero {
+        max-height: min(38vh, 310px);
+      }
+
+      .listing-arrow {
+        width: 34px;
+        height: 34px;
+      }
+
+      .listing-stepper .btn-ghost-small,
+      .listing-nav-cluster .btn-ghost-small {
+        font-size: 0.78rem;
+        padding: 0.42rem 0.62rem;
       }
     }
 
@@ -2823,11 +2876,24 @@
       return i !== null && Number.isFinite(i) ? i : null;
     }
 
+    const viewportMeta = document.querySelector('meta[name="viewport"]');
+    const defaultViewport = viewportMeta?.getAttribute("content") || "width=device-width, initial-scale=1.0, viewport-fit=cover";
+
+    function setListingViewportLock(on) {
+      if (!viewportMeta) return;
+      if (on) {
+        viewportMeta.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover");
+      } else {
+        viewportMeta.setAttribute("content", defaultViewport);
+      }
+    }
+
     function listingShow(show) {
       if (!listingPage) return;
       listingPage.classList.toggle("show", show);
       listingPage.setAttribute("aria-hidden", show ? "false" : "true");
       document.body.classList.toggle("listing-active", show);
+      setListingViewportLock(show);
     }
 
     function listingClose() {
