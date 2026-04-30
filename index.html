@@ -1194,6 +1194,8 @@
     @media (max-width: 920px) {
       .listing-page {
         padding-top: env(safe-area-inset-top);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
         padding-bottom: env(safe-area-inset-bottom);
       }
 
@@ -2881,31 +2883,17 @@
       return i !== null && Number.isFinite(i) ? i : null;
     }
 
-    const viewportMeta = document.querySelector('meta[name="viewport"]');
-    const defaultViewport = viewportMeta?.getAttribute("content") || "width=device-width, initial-scale=1.0, viewport-fit=cover";
-    const listingViewport = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover";
-    const lightboxViewport = "width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover";
-
     function closeMobileMenuState() {
       mobileMenu?.classList.remove("show");
       hamburger?.classList.remove("open");
     }
 
-    function setListingViewportLock(on) {
-      if (!viewportMeta) return;
-      if (on) {
-        viewportMeta.setAttribute("content", listingViewport);
-      } else {
-        viewportMeta.setAttribute("content", defaultViewport);
-      }
-    }
-
     function listingShow(show) {
       if (!listingPage) return;
+      if (show) closeMobileMenuState();
       listingPage.classList.toggle("show", show);
       listingPage.setAttribute("aria-hidden", show ? "false" : "true");
       document.body.classList.toggle("listing-active", show);
-      setListingViewportLock(show);
     }
 
     function listingClose() {
@@ -3016,15 +3004,11 @@
       lightbox.setAttribute("aria-hidden", "false");
       lightboxImg.src = heroImg.src;
       lightboxImg.alt = heroImg.alt;
-      if (viewportMeta) viewportMeta.setAttribute("content", lightboxViewport);
     }
 
     function closeLightbox() {
       lightbox.classList.remove("show");
       lightbox.setAttribute("aria-hidden", "true");
-      if (viewportMeta) {
-        viewportMeta.setAttribute("content", listingPage?.classList.contains("show") ? listingViewport : defaultViewport);
-      }
     }
 
     function openListingUI(index) {
