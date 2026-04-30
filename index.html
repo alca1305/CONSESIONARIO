@@ -1028,6 +1028,7 @@
       min-height: 0;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      overscroll-behavior-x: none;
     }
 
     .listing-inner-wrap {
@@ -1068,6 +1069,10 @@
       background: #080808;
       border: 1px solid rgba(232, 198, 109, 0.25);
       display: block;
+      touch-action: pan-y;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .listing-hero-wrap {
@@ -1091,6 +1096,8 @@
       transition: var(--transition);
       display: grid;
       place-items: center;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .listing-arrow:hover {
@@ -1116,6 +1123,7 @@
       align-items: center;
       justify-content: center;
       padding: 1rem;
+      overscroll-behavior: contain;
     }
 
     .photo-lightbox.show {
@@ -1129,6 +1137,10 @@
       border-radius: 10px;
       border: 1px solid rgba(232, 198, 109, 0.25);
       background: #050505;
+      touch-action: pan-y;
+      -webkit-user-drag: none;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .photo-lightbox .close-lb {
@@ -1143,6 +1155,115 @@
       color: #fff;
       font-size: 1.35rem;
       cursor: pointer;
+    }
+
+    @media (max-width: 920px) {
+      .listing-head {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+        align-items: stretch;
+        padding: 0.55rem 0.7rem;
+      }
+
+      .listing-brand,
+      .listing-stepper,
+      .listing-nav-cluster {
+        justify-self: stretch;
+      }
+
+      .listing-stepper,
+      .listing-nav-cluster {
+        justify-content: center;
+      }
+
+      .listing-nav-cluster {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.15rem;
+      }
+
+      .listing-head .btn-ghost-small {
+        min-height: 40px;
+        padding: 0.48rem 0.8rem;
+        white-space: nowrap;
+      }
+
+      .listing-inner-wrap {
+        padding: 0.72rem;
+      }
+
+      .listing-layout {
+        gap: 0.95rem;
+      }
+
+      .listing-media .listing-hero {
+        max-height: min(44vh, 420px);
+      }
+
+      .listing-thumbs {
+        gap: 0.38rem;
+        max-height: 132px;
+      }
+
+      .listing-thumbs img {
+        width: 70px;
+        height: 52px;
+      }
+
+      .listing-arrow {
+        width: 38px;
+        height: 38px;
+      }
+
+      .listing-arrow.left { left: 0.38rem; }
+      .listing-arrow.right { right: 0.38rem; }
+
+      .listing-hero-hint {
+        font-size: 0.76rem;
+      }
+
+      .listing-info-block {
+        border-radius: 14px;
+        padding: 0.88rem;
+      }
+
+      .listing-info-block .detail-tabpanel {
+        max-height: none;
+      }
+
+      .detail-tabbar {
+        margin: 0.65rem 0 0.52rem;
+      }
+
+      .detail-tabc {
+        font-size: 0.74rem;
+        padding: 0.44rem 0.6rem;
+      }
+
+      .detail-dl div {
+        grid-template-columns: 1fr;
+        gap: 0.18rem;
+      }
+
+      .detail-dl dd {
+        text-align: left;
+      }
+
+      .listing-foot-actions {
+        position: sticky;
+        bottom: 0;
+        z-index: 2;
+        background: rgba(9, 9, 9, 0.95);
+        margin-inline: -0.88rem;
+        margin-bottom: -0.88rem;
+        padding: 0.82rem;
+        border-top: 1px solid rgba(232, 198, 109, 0.2);
+      }
+
+      .listing-foot-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
 
     .listing-thumbs {
@@ -1647,6 +1768,31 @@
         padding: 0.9rem;
       }
 
+      .cars-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .car-image {
+        aspect-ratio: 4 / 3;
+      }
+
+      .car-title-wrap {
+        min-height: 2.9rem;
+      }
+
+      .car-name {
+        font-size: 0.87rem;
+      }
+
+      .price {
+        font-size: 0.86rem;
+      }
+
+      .car-bottom-meta p:last-child {
+        font-size: 0.75rem !important;
+      }
+
       .about-image {
         min-height: 250px;
       }
@@ -1716,6 +1862,10 @@
 
       .scroll-indicator {
         bottom: 0.75rem;
+      }
+
+      .cars-grid {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -2662,7 +2812,6 @@
       thumbRow.querySelectorAll("img").forEach((el, i) => {
         const on = i === nx;
         el.classList.toggle("active", on);
-        if (on) el.scrollIntoView({ block: "nearest", inline: "nearest" });
       });
       if (lightbox.classList.contains("show")) {
         lightboxImg.src = p.src;
@@ -2673,6 +2822,46 @@
     function stepPhoto(delta) {
       if (!activePhotoList.length) return;
       setActivePhoto(activePhotoIndex + delta);
+    }
+
+    function attachSwipeNavigation(targetEl) {
+      if (!targetEl) return;
+      let sx = 0;
+      let sy = 0;
+      let horizontalLock = false;
+      let tracking = false;
+      targetEl.addEventListener("touchstart", (e) => {
+        const t = e.changedTouches?.[0];
+        if (!t) return;
+        sx = t.clientX;
+        sy = t.clientY;
+        horizontalLock = false;
+        tracking = true;
+      }, { passive: true });
+      targetEl.addEventListener("touchmove", (e) => {
+        if (!tracking) return;
+        const t = e.changedTouches?.[0];
+        if (!t) return;
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (!horizontalLock && Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+          horizontalLock = true;
+        }
+        if (horizontalLock) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      targetEl.addEventListener("touchend", (e) => {
+        if (!tracking) return;
+        tracking = false;
+        const t = e.changedTouches?.[0];
+        if (!t) return;
+        const dx = t.clientX - sx;
+        const dy = t.clientY - sy;
+        if (Math.abs(dx) < 34 || Math.abs(dx) < Math.abs(dy)) return;
+        if (dx < 0) stepPhoto(1);
+        if (dx > 0) stepPhoto(-1);
+      }, { passive: true });
     }
 
     function openLightbox() {
@@ -2765,6 +2954,8 @@
     });
     lightboxPrev?.addEventListener("click", () => stepPhoto(-1));
     lightboxNext?.addEventListener("click", () => stepPhoto(1));
+    attachSwipeNavigation(heroImg);
+    attachSwipeNavigation(lightboxImg);
 
     function stepListing(delta) {
       const stock = getStockPayload();
