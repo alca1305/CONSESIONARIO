@@ -1171,7 +1171,7 @@
       border-radius: 10px;
       border: 1px solid rgba(232, 198, 109, 0.25);
       background: #050505;
-      touch-action: pan-y;
+      touch-action: auto;
       -webkit-user-drag: none;
       user-select: none;
       -webkit-user-select: none;
@@ -1340,18 +1340,23 @@
 
     .listing-thumbs {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 0.45rem;
       margin-top: 0.85rem;
-      max-height: 230px;
-      overflow-y: auto;
-      padding-bottom: 0.15rem;
+      max-height: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 0.2rem;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
       scrollbar-width: none;
     }
 
     .listing-thumbs img {
       width: 96px;
       height: 72px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
       object-fit: cover;
       border-radius: 8px;
       border: 2px solid transparent;
@@ -2878,11 +2883,18 @@
 
     const viewportMeta = document.querySelector('meta[name="viewport"]');
     const defaultViewport = viewportMeta?.getAttribute("content") || "width=device-width, initial-scale=1.0, viewport-fit=cover";
+    const listingViewport = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover";
+    const lightboxViewport = "width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover";
+
+    function closeMobileMenuState() {
+      mobileMenu?.classList.remove("show");
+      hamburger?.classList.remove("open");
+    }
 
     function setListingViewportLock(on) {
       if (!viewportMeta) return;
       if (on) {
-        viewportMeta.setAttribute("content", "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover");
+        viewportMeta.setAttribute("content", listingViewport);
       } else {
         viewportMeta.setAttribute("content", defaultViewport);
       }
@@ -2898,6 +2910,7 @@
 
     function listingClose() {
       closeLightbox();
+      closeMobileMenuState();
       if (window.location.hash && window.location.hash.startsWith("#vehiculo=")) {
         history.replaceState(null, "", window.location.pathname + window.location.search);
       }
@@ -3003,11 +3016,15 @@
       lightbox.setAttribute("aria-hidden", "false");
       lightboxImg.src = heroImg.src;
       lightboxImg.alt = heroImg.alt;
+      if (viewportMeta) viewportMeta.setAttribute("content", lightboxViewport);
     }
 
     function closeLightbox() {
       lightbox.classList.remove("show");
       lightbox.setAttribute("aria-hidden", "true");
+      if (viewportMeta) {
+        viewportMeta.setAttribute("content", listingPage?.classList.contains("show") ? listingViewport : defaultViewport);
+      }
     }
 
     function openListingUI(index) {
