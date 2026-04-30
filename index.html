@@ -68,12 +68,11 @@
     }
 
     .preloader-logo {
-      font-family: "Playfair Display", serif;
-      font-size: clamp(2rem, 6vw, 4rem);
-      color: var(--gold);
-      letter-spacing: 0.08em;
       position: relative;
       animation: pulse 1.5s ease-in-out infinite;
+      width: min(84vw, 560px);
+      display: block;
+      object-fit: contain;
     }
 
     @keyframes pulse {
@@ -113,6 +112,7 @@
 
     .nav-inner {
       max-width: 1200px;
+      width: 100%;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -121,10 +121,18 @@
     }
 
     .brand {
-      font-family: "Playfair Display", serif;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      font-size: 1.35rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 0;
+    }
+
+    .brand img {
+      height: 46px;
+      width: auto;
+      max-width: 240px;
+      object-fit: contain;
+      object-position: left center;
     }
 
     .brand span {
@@ -399,6 +407,7 @@
 
     .container {
       max-width: 1240px;
+      width: 100%;
       margin: 0 auto;
     }
 
@@ -964,6 +973,7 @@
       position: fixed;
       inset: 0;
       z-index: 5000;
+      height: 100dvh;
       flex-direction: column;
       background: radial-gradient(120% 80% at 50% 0%, #1f1a14 0%, #0c0c0c 52%, #080808 100%);
       overflow: hidden;
@@ -1007,6 +1017,16 @@
       align-items: center;
       justify-content: flex-end;
       gap: 0.45rem;
+      scrollbar-width: none;
+    }
+
+    .listing-nav-cluster::-webkit-scrollbar,
+    .listing-thumbs::-webkit-scrollbar,
+    .listing-main-scroller::-webkit-scrollbar,
+    .mobile-menu::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
     }
 
     .listing-stepper {
@@ -1041,6 +1061,8 @@
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-x: none;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
     }
 
     .listing-inner-wrap {
@@ -1189,9 +1211,9 @@
       }
 
       .listing-nav-cluster {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 0.15rem;
+        flex-wrap: wrap;
+        overflow: visible;
+        padding-bottom: 0;
       }
 
       .listing-head .btn-ghost-small {
@@ -1286,6 +1308,7 @@
       max-height: 230px;
       overflow-y: auto;
       padding-bottom: 0.15rem;
+      scrollbar-width: none;
     }
 
     .listing-thumbs img {
@@ -1733,6 +1756,24 @@
     }
 
     @media (max-width: 759px) {
+      .navbar {
+        padding: 0.6rem 0.75rem;
+      }
+
+      .nav-inner {
+        gap: 0.6rem;
+      }
+
+      .brand img {
+        height: 34px;
+        max-width: 180px;
+      }
+
+      .mobile-menu {
+        left: 0.55rem;
+        right: 0.55rem;
+      }
+
       .section {
         padding: clamp(2.7rem, 8vw, 4rem) 1rem;
       }
@@ -1830,6 +1871,12 @@
         min-height: 280px;
       }
 
+      .stats,
+      .cards,
+      .cars-grid {
+        margin-inline: auto;
+      }
+
       .hour-row {
         align-items: flex-start;
         padding-inline: 0.15rem;
@@ -1842,6 +1889,15 @@
     }
 
     @media (max-width: 480px) {
+      .navbar {
+        padding-inline: 0.55rem;
+      }
+
+      .brand img {
+        height: 30px;
+        max-width: 158px;
+      }
+
       .brand {
         font-size: 1.15rem;
       }
@@ -1952,14 +2008,16 @@
 </head>
 <body>
   <div class="preloader" id="preloader">
-    <div class="preloader-logo">R<span class="amp">&amp;</span>M Sportwagen</div>
+    <img class="preloader-logo" src="assets/logo-principal.png" alt="R&M Sportwagen">
   </div>
 
   <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
   <header class="navbar" id="navbar">
     <div class="nav-inner">
-      <a class="brand" href="#inicio">R<span class="amp">&amp;</span>M <span>Sportwagen</span></a>
+      <a class="brand" href="#inicio" aria-label="R&M Sportwagen">
+        <img src="assets/logo-principal.png" alt="R&M Sportwagen">
+      </a>
       <nav class="nav-links">
         <a href="#valor">Por que nosotros</a>
         <a href="#catalogo">Vehiculos</a>
@@ -2053,7 +2111,6 @@
       <h2 class="title">Tu coche ideal te espera</h2>
       <div class="divider"></div>
       <p class="sub">Stock representativo de alto rendimiento: supercoches, SUV de lujo y berlinas deportivas.</p>
-      <p class="catalog-hint">Ordenados por precio (mayor a menor). Pulse en cualquier vehiculo para abrir una ficha completa dentro de esta web: fotos, precio, equipamiento, extras y ficha tecnica. No necesita cambiar de pagina.</p>
       <div class="catalog-filters">
         <button class="filter-btn active" data-filter="all">Stock completo disponible</button>
       </div>
@@ -2213,16 +2270,16 @@
             <p>Vehiculos vendidos</p>
           </div>
           <div class="stat">
-            <p class="stat-num" data-target="50" data-suffix="★">0</p>
-            <p>Valoracion real</p>
+            <p class="stat-num" data-target="4.8" data-suffix="/5" data-decimals="1">0</p>
+            <p>Valoracion media real</p>
           </div>
           <div class="stat">
             <p class="stat-num" data-target="40">0</p>
             <p>Años de experiencia</p>
           </div>
           <div class="stat">
-            <p class="stat-num" data-target="100" data-suffix="%">0</p>
-            <p>Satisfaccion</p>
+            <p class="stat-num" data-target="97" data-suffix="%">0</p>
+            <p>Satisfaccion clientes</p>
           </div>
         </div>
       </div>
@@ -2541,16 +2598,18 @@
       const nums = statsEl.querySelectorAll(".stat-num");
       nums.forEach((num) => {
         const target = Number(num.dataset.target);
+        const decimals = Number(num.dataset.decimals || "0");
         const suffix = num.dataset.suffix || "+";
         let count = 0;
-        const step = Math.max(1, Math.ceil(target / 70));
+        const step = Math.max(target / 70, decimals > 0 ? 0.05 : 1);
         const timer = setInterval(() => {
           count += step;
           if (count >= target) {
             count = target;
             clearInterval(timer);
           }
-          num.textContent = count + suffix;
+          const value = decimals > 0 ? count.toFixed(decimals) : Math.round(count).toString();
+          num.textContent = value + suffix;
         }, 25);
       });
     };
