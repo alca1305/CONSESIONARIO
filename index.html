@@ -958,6 +958,7 @@
       letter-spacing: 0.06em;
       color: var(--gold-light);
       margin-bottom: 0.45rem;
+      overflow-wrap: anywhere;
     }
 
     .detail-prose p {
@@ -965,6 +966,7 @@
       font-size: 0.9rem;
       line-height: 1.65;
       margin-bottom: 0.65rem;
+      overflow-wrap: anywhere;
     }
 
     .detail-ref {
@@ -978,10 +980,14 @@
       position: fixed;
       inset: 0;
       z-index: 5000;
+      width: 100vw;
+      max-width: 100vw;
       height: 100dvh;
       flex-direction: column;
       background: radial-gradient(120% 80% at 50% 0%, #1f1a14 0%, #0c0c0c 52%, #080808 100%);
       overflow: hidden;
+      overflow-x: hidden;
+      overscroll-behavior-x: none;
       color: var(--text);
     }
 
@@ -1064,6 +1070,7 @@
       flex: 1;
       min-height: 0;
       overflow-y: auto;
+      overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-x: none;
       overscroll-behavior-y: contain;
@@ -1072,6 +1079,7 @@
 
     .listing-inner-wrap {
       max-width: min(1420px, 100%);
+      width: 100%;
       margin: 0 auto;
       padding: clamp(1.1rem, 3.2vw, 2.4rem);
     }
@@ -1091,6 +1099,10 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: clamp(1.4rem, 3.2vw, 2.6rem);
+    }
+
+    .listing-layout > * {
+      min-width: 0;
     }
 
     @media (min-width: 980px) {
@@ -1249,7 +1261,9 @@
       .listing-head .btn-ghost-small {
         min-height: 40px;
         padding: 0.48rem 0.8rem;
-        white-space: nowrap;
+        white-space: normal;
+        line-height: 1.2;
+        text-align: center;
       }
 
       .listing-inner-wrap {
@@ -1300,6 +1314,15 @@
         overflow: hidden;
       }
 
+      .listing-info-block h2,
+      .detail-list li,
+      .detail-dl dt,
+      .detail-dl dd,
+      .detail-chip {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
       .listing-info-block .detail-tabpanel {
         max-height: none;
       }
@@ -1333,8 +1356,8 @@
         bottom: 0;
         z-index: 2;
         background: rgba(9, 9, 9, 0.95);
-        margin-inline: -0.88rem;
-        margin-bottom: -0.88rem;
+        margin-inline: 0;
+        margin-bottom: 0;
         padding: 0.82rem 0.82rem calc(0.82rem + env(safe-area-inset-bottom));
         border-top: 1px solid rgba(232, 198, 109, 0.2);
       }
@@ -1356,6 +1379,7 @@
       padding-bottom: 0.2rem;
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x proximity;
+      touch-action: pan-x;
       scrollbar-width: none;
     }
 
@@ -1384,10 +1408,12 @@
       padding: clamp(1.1rem, 2.9vw, 1.75rem);
       background: rgba(18, 18, 18, 0.75);
       box-shadow: 0 20px 46px rgba(0, 0, 0, 0.45);
+      min-width: 0;
     }
 
     .listing-info-block .detail-meta-m {
       margin-bottom: 0.95rem;
+      overflow-wrap: anywhere;
     }
 
     .listing-info-block .detail-tabpanel {
@@ -2916,6 +2942,11 @@
       listingPage.classList.toggle("show", show);
       listingPage.setAttribute("aria-hidden", show ? "false" : "true");
       document.body.classList.toggle("listing-active", show);
+      if (show) {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollLeft = 0;
+        document.body.scrollLeft = 0;
+      }
     }
 
     function listingClose() {
@@ -3020,6 +3051,28 @@
       }, { passive: true });
     }
 
+    let listingTouchStartX = 0;
+    let listingTouchStartY = 0;
+    listingPage?.addEventListener("touchstart", (e) => {
+      const t = e.changedTouches?.[0];
+      if (!t) return;
+      listingTouchStartX = t.clientX;
+      listingTouchStartY = t.clientY;
+    }, { passive: true });
+
+    listingPage?.addEventListener("touchmove", (e) => {
+      if (!listingPage.classList.contains("show")) return;
+      if (e.target.closest(".listing-thumbs")) return;
+      if (lightbox?.classList.contains("show")) return;
+      const t = e.changedTouches?.[0];
+      if (!t) return;
+      const dx = t.clientX - listingTouchStartX;
+      const dy = t.clientY - listingTouchStartY;
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
     function openLightbox() {
       if (!activePhotoList.length) return;
       lightbox.classList.add("show");
@@ -3112,6 +3165,11 @@
     lightboxNext?.addEventListener("click", () => stepPhoto(1));
     attachSwipeNavigation(heroImg);
     attachSwipeNavigation(lightboxImg);
+    listingScroller?.addEventListener("scroll", () => {
+      if (listingScroller.scrollLeft !== 0) {
+        listingScroller.scrollLeft = 0;
+      }
+    }, { passive: true });
 
     function stepListing(delta) {
       const stock = getStockPayload();
