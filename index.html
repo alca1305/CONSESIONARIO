@@ -160,67 +160,79 @@
     }
 
     .hamburger {
-      width: 42px;
-      height: 42px;
+      min-width: 92px;
+      height: 38px;
       border: 1px solid var(--line);
-      border-radius: 10px;
-      background: transparent;
-      display: grid;
-      place-items: center;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      color: #ece3c8;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
       cursor: pointer;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--text);
-      position: relative;
+      font: inherit;
+      font-size: 0.83rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
       transition: var(--transition);
+      padding: 0 0.8rem;
     }
 
-    .hamburger span::before,
-    .hamburger span::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      width: 20px;
-      height: 2px;
-      background: var(--text);
-      transition: var(--transition);
+    .hamburger::before {
+      content: "☰";
+      font-size: 0.95rem;
+      line-height: 1;
+      transform: translateY(-0.5px);
     }
 
-    .hamburger span::before { top: -6px; }
-    .hamburger span::after { top: 6px; }
-
-    .hamburger.open span {
-      background: transparent;
+    .hamburger:hover,
+    .hamburger.open {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+      background: rgba(201, 168, 76, 0.08);
     }
 
-    .hamburger.open span::before {
-      transform: rotate(45deg);
-      top: 0;
-    }
-
-    .hamburger.open span::after {
-      transform: rotate(-45deg);
-      top: 0;
+    .hamburger.open::before {
+      content: "×";
+      font-size: 1.05rem;
     }
 
     .mobile-menu {
       position: fixed;
-      top: 72px;
-      left: 1rem;
-      right: 1rem;
+      top: 64px;
+      left: 0.75rem;
+      right: 0.75rem;
       background: rgba(15, 15, 15, 0.94);
       border: 1px solid var(--line);
       border-radius: 14px;
       backdrop-filter: blur(14px);
       display: none;
       flex-direction: column;
-      padding: 1rem;
-      gap: 0.7rem;
+      padding: 0.8rem;
+      gap: 0.45rem;
       z-index: 1001;
+    }
+
+    .mobile-menu a {
+      border: 1px solid rgba(232, 198, 109, 0.18);
+      border-radius: 999px;
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #e3e3e3;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.02);
+      transition: var(--transition);
+    }
+
+    .mobile-menu a:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+      background: rgba(201, 168, 76, 0.08);
     }
 
     .mobile-menu.show {
@@ -1955,9 +1967,7 @@
         <a href="#testimonios">Testimonios</a>
         <a href="#contacto">Contacto</a>
       </nav>
-      <button class="hamburger" id="hamburger" aria-label="Abrir menu">
-        <span></span>
-      </button>
+      <button class="hamburger" id="hamburger" aria-label="Abrir menu">Menu</button>
     </div>
     <nav class="mobile-menu" id="mobileMenu">
       <a href="#valor">Por que nosotros</a>
@@ -2199,7 +2209,7 @@
         </p>
         <div class="stats" id="stats">
           <div class="stat">
-            <p class="stat-num" data-target="200">0</p>
+            <p class="stat-num" data-target="4000">0</p>
             <p>Vehiculos vendidos</p>
           </div>
           <div class="stat">
@@ -2207,7 +2217,7 @@
             <p>Valoracion real</p>
           </div>
           <div class="stat">
-            <p class="stat-num" data-target="10">0</p>
+            <p class="stat-num" data-target="40">0</p>
             <p>Años de experiencia</p>
           </div>
           <div class="stat">
@@ -2431,8 +2441,6 @@
       </div>
       <div class="listing-nav-cluster">
         <button type="button" id="listingBackCatalog" class="btn-ghost-small">Volver al catalogo</button>
-        <a href="#inicio" id="listingGoHome" class="btn-ghost-small">Ir al inicio</a>
-        <a href="#contacto" id="listingGoContact" class="btn-ghost-small">Contacto</a>
         <button type="button" id="listingCloseBtn" class="btn-ghost-small">Cerrar</button>
       </div>
     </header>
