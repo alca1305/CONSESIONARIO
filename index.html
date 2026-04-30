@@ -544,9 +544,24 @@
       inset: 0;
       display: grid;
       place-items: center;
+      padding: 1rem;
+      text-align: center;
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.72));
       opacity: 0;
       transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .car-overlay-hint {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fff;
+      border: 1px solid rgba(232, 198, 109, 0.6);
+      background: rgba(0, 0, 0, 0.45);
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
     }
 
     .car-card:hover .car-image img {
@@ -574,6 +589,624 @@
       flex-direction: column;
       gap: 0.5rem;
       flex: 1;
+    }
+
+    .car-title-wrap {
+      min-height: 3.35rem;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .car-name {
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      line-height: 1.25;
+    }
+
+    .car-bottom-meta {
+      margin-top: auto;
+      display: grid;
+      gap: 0.22rem;
+    }
+
+    .mini-gallery {
+      margin-top: 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+      gap: 0.35rem;
+      max-height: 220px;
+      overflow: auto;
+      padding-right: 0.15rem;
+    }
+
+    .mini-gallery img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+
+    #carsGrid .mini-gallery {
+      display: none;
+    }
+
+    #catalogo.reveal {
+      opacity: 1;
+      transform: none;
+    }
+
+    #carsGrid .car-card {
+      cursor: pointer;
+    }
+
+    #carsGrid .car-card:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+
+    .catalog-hint {
+      color: #a5a5a5;
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+      max-width: 640px;
+    }
+
+    .car-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.9);
+      padding: clamp(1rem, 4vw, 2rem);
+      align-items: center;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .car-modal-backdrop.show {
+      display: flex;
+    }
+
+    .car-modal-panel {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: min(940px, 100%);
+      max-height: min(92vh, 980px);
+      overflow-y: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(232, 198, 109, 0.35);
+      background: linear-gradient(165deg, #151515 0%, #0c0c0c 100%);
+      box-shadow: 0 28px 60px rgba(0, 0, 0, 0.65);
+    }
+
+    .car-modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(17, 17, 17, 0.95);
+      color: var(--text);
+      font-size: 1.4rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .car-modal-close:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+    }
+
+    .detail-hero {
+      width: 100%;
+      max-height: min(46vh, 420px);
+      object-fit: contain;
+      background: #080808;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-thumbs-wrap {
+      display: flex;
+      gap: 0.45rem;
+      flex-wrap: wrap;
+      padding: 0.75rem clamp(1rem, 3vw, 1.35rem);
+      background: #0e0e0e;
+      border-bottom: 1px solid var(--line);
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .detail-thumb {
+      width: 72px;
+      height: 54px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.85;
+      transition: var(--transition);
+    }
+
+    .detail-thumb:hover,
+    .detail-thumb.active {
+      border-color: var(--gold-light);
+      opacity: 1;
+    }
+
+    .detail-copy {
+      padding: clamp(1rem, 3vw, 1.55rem);
+    }
+
+    .detail-copy h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.2rem, 3.5vw, 1.75rem);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .detail-copy .detail-price-m {
+      color: var(--gold-light);
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .detail-copy .detail-meta-m {
+      color: #bdbdbd;
+      margin-bottom: 1.25rem;
+      font-size: 0.96rem;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .detail-tabbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.85rem 0 0.65rem;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: linear-gradient(180deg, #121212 70%, transparent);
+      padding-bottom: 0.35rem;
+    }
+
+    .detail-tabc {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.04);
+      color: #d0d0d0;
+      font: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 0.45rem 0.72rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .detail-tabc:hover {
+      border-color: rgba(232, 198, 109, 0.45);
+      color: var(--text);
+    }
+
+    .detail-tabc.active {
+      color: #111;
+      border-color: transparent;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      box-shadow: 0 6px 16px rgba(201, 168, 76, 0.28);
+    }
+
+    .detail-tabpanel {
+      display: none;
+      max-height: min(46vh, 440px);
+      overflow-y: auto;
+      padding-right: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .detail-tabpanel.active {
+      display: block;
+    }
+
+    .detail-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+
+    .detail-chip {
+      font-size: 0.82rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      background: rgba(201, 168, 76, 0.08);
+      color: #e8e0c8;
+    }
+
+    .detail-dl {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .detail-dl div {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.6rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+    }
+
+    .detail-dl dt {
+      color: #9a9a9a;
+      font-weight: 500;
+    }
+
+    .detail-dl dd {
+      margin: 0;
+      text-align: right;
+      color: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .detail-muted {
+      color: #888;
+      font-size: 0.82rem;
+      line-height: 1.45;
+      margin-top: 0.65rem;
+    }
+
+    .detail-equip-acc {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .detail-equip-acc summary {
+      cursor: pointer;
+      padding: 0.65rem 0.85rem;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--gold-light);
+      list-style: none;
+    }
+
+    .detail-equip-acc summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .detail-equip-acc[open] summary {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-list {
+      margin: 0;
+      padding: 0.55rem 0.85rem 0.75rem;
+      list-style: none;
+      display: grid;
+      gap: 0.38rem;
+      font-size: 0.84rem;
+      color: #c8c8c8;
+      line-height: 1.45;
+    }
+
+    .detail-list li::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      margin-right: 0.45rem;
+      vertical-align: middle;
+      opacity: 0.85;
+    }
+
+    .detail-spec-block {
+      margin-bottom: 1rem;
+    }
+
+    .detail-spec-block h4 {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gold-light);
+      margin-bottom: 0.45rem;
+    }
+
+    .detail-prose p {
+      color: #c6c6c6;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      margin-bottom: 0.65rem;
+    }
+
+    .detail-ref {
+      font-size: 0.85rem;
+      color: #9f9f9f;
+      margin-top: 0.5rem;
+    }
+
+    .listing-page {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      flex-direction: column;
+      background: radial-gradient(120% 80% at 50% 0%, #1f1a14 0%, #0c0c0c 52%, #080808 100%);
+      overflow: hidden;
+      color: var(--text);
+    }
+
+    .listing-page.show {
+      display: flex;
+    }
+
+    .listing-head {
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem clamp(1rem, 4vw, 2rem);
+      border-bottom: 1px solid var(--line);
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+    }
+
+    .listing-brand {
+      justify-self: start;
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+      color: var(--gold-light);
+      text-decoration: none;
+    }
+
+    .listing-brand:hover {
+      color: var(--gold);
+    }
+
+    .listing-nav-cluster {
+      justify-self: end;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.45rem;
+    }
+
+    .listing-stepper {
+      justify-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .listing-head .btn-ghost-small {
+      font-size: 0.82rem;
+      padding: 0.4rem 0.72rem;
+      border-radius: 999px;
+      border: 1px solid rgba(232, 198, 109, 0.35);
+      background: transparent;
+      color: #e8e0c8;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .listing-head .btn-ghost-small:hover {
+      border-color: var(--gold-light);
+      color: var(--gold-light);
+    }
+
+    .listing-main-scroller {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .listing-inner-wrap {
+      max-width: min(1420px, 100%);
+      margin: 0 auto;
+      padding: clamp(1.1rem, 3.2vw, 2.4rem);
+    }
+
+    .listing-photo-banner {
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.25rem;
+      border-radius: 12px;
+      border: 1px dashed rgba(232, 198, 109, 0.45);
+      background: rgba(201, 168, 76, 0.1);
+      color: #dcd0b0;
+      font-size: 0.89rem;
+      line-height: 1.55;
+    }
+
+    .listing-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: clamp(1.4rem, 3.2vw, 2.6rem);
+    }
+
+    @media (min-width: 980px) {
+      .listing-layout {
+        grid-template-columns: minmax(0, 1.2fr) minmax(420px, 1fr);
+        align-items: start;
+      }
+    }
+
+    .listing-media .listing-hero {
+      width: 100%;
+      max-height: min(64vh, 760px);
+      object-fit: contain;
+      border-radius: 14px;
+      background: #080808;
+      border: 1px solid rgba(232, 198, 109, 0.25);
+      display: block;
+    }
+
+    .listing-hero-wrap {
+      position: relative;
+    }
+
+    .listing-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(232, 198, 109, 0.55);
+      background: rgba(0, 0, 0, 0.56);
+      color: #f7efda;
+      font-size: 1.3rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 3;
+      transition: var(--transition);
+      display: grid;
+      place-items: center;
+    }
+
+    .listing-arrow:hover {
+      background: rgba(0, 0, 0, 0.82);
+      border-color: var(--gold-light);
+    }
+
+    .listing-arrow.left { left: 0.6rem; }
+    .listing-arrow.right { right: 0.6rem; }
+
+    .listing-hero-hint {
+      margin-top: 0.35rem;
+      color: #8f8f8f;
+      font-size: 0.82rem;
+    }
+
+    .photo-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 7000;
+      background: rgba(0, 0, 0, 0.96);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .photo-lightbox.show {
+      display: flex;
+    }
+
+    .photo-lightbox img {
+      max-width: min(94vw, 1800px);
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      border: 1px solid rgba(232, 198, 109, 0.25);
+      background: #050505;
+    }
+
+    .photo-lightbox .close-lb {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(232, 198, 109, 0.55);
+      background: rgba(10, 10, 10, 0.8);
+      color: #fff;
+      font-size: 1.35rem;
+      cursor: pointer;
+    }
+
+    .listing-thumbs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.85rem;
+      max-height: 230px;
+      overflow-y: auto;
+      padding-bottom: 0.15rem;
+    }
+
+    .listing-thumbs img {
+      width: 96px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      opacity: 0.82;
+      transition: var(--transition);
+    }
+
+    .listing-thumbs img:hover,
+    .listing-thumbs img.active {
+      border-color: var(--gold-light);
+      opacity: 1;
+    }
+
+    .listing-info-block {
+      border: 1px solid rgba(232, 198, 109, 0.22);
+      border-radius: 16px;
+      padding: clamp(1.1rem, 2.9vw, 1.75rem);
+      background: rgba(18, 18, 18, 0.75);
+      box-shadow: 0 20px 46px rgba(0, 0, 0, 0.45);
+    }
+
+    .listing-info-block .detail-meta-m {
+      margin-bottom: 0.95rem;
+    }
+
+    .listing-info-block .detail-tabpanel {
+      max-height: min(62vh, 760px);
+    }
+
+    .listing-foot-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1.35rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .listing-foot-note {
+      width: 100%;
+      margin: 0;
+      font-size: 0.92rem;
+      color: #8e8e8e;
+      line-height: 1.5;
+    }
+
+    body.listing-active {
+      overflow: hidden;
     }
 
     .car-name {
@@ -1260,95 +1893,143 @@
       <h2 class="title">Tu coche ideal te espera</h2>
       <div class="divider"></div>
       <p class="sub">Stock representativo de alto rendimiento: supercoches, SUV de lujo y berlinas deportivas.</p>
+      <p class="catalog-hint">Ordenados por precio (mayor a menor). Pulse en cualquier vehiculo para abrir una ficha completa dentro de esta web: fotos, precio, equipamiento, extras y ficha tecnica. No necesita cambiar de pagina.</p>
       <div class="catalog-filters">
-        <button class="filter-btn active" data-filter="all">Todos</button>
-        <button class="filter-btn" data-filter="compacto">Supercoches</button>
-        <button class="filter-btn" data-filter="suv">SUV Premium</button>
-        <button class="filter-btn" data-filter="berlina">Berlina Sport</button>
-        <button class="filter-btn" data-filter="lujo">Edicion Exclusiva</button>
+        <button class="filter-btn active" data-filter="all">Stock completo disponible</button>
       </div>
       <div class="cars-grid" id="carsGrid">
-        <article class="car-card" data-type="berlina lujo">
+
+        <article class="car-card" data-type="stock-real" data-stock-index="0">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=80" alt="BMW Serie 3">
+            <img src="assets/autocasion/coche-01/foto-001.jpg" alt="PORSCHE Macan GTS Aut.">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">BMW Serie 3</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 24.900EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">PORSCHE Macan GTS Aut.</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">50 FOTOS</span>
+              <p class="price">Al contado 105.000 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2023 · Gasolina · 57.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-01/foto-001.jpg" alt="PORSCHE Macan GTS Aut. foto 1" loading="lazy"><img src="assets/autocasion/coche-01/foto-002.jpg" alt="PORSCHE Macan GTS Aut. foto 2" loading="lazy"><img src="assets/autocasion/coche-01/foto-003.jpg" alt="PORSCHE Macan GTS Aut. foto 3" loading="lazy"><img src="assets/autocasion/coche-01/foto-004.jpg" alt="PORSCHE Macan GTS Aut. foto 4" loading="lazy"><img src="assets/autocasion/coche-01/foto-005.jpg" alt="PORSCHE Macan GTS Aut. foto 5" loading="lazy"><img src="assets/autocasion/coche-01/foto-006.jpg" alt="PORSCHE Macan GTS Aut. foto 6" loading="lazy"><img src="assets/autocasion/coche-01/foto-007.jpg" alt="PORSCHE Macan GTS Aut. foto 7" loading="lazy"><img src="assets/autocasion/coche-01/foto-008.jpg" alt="PORSCHE Macan GTS Aut. foto 8" loading="lazy"><img src="assets/autocasion/coche-01/foto-009.jpg" alt="PORSCHE Macan GTS Aut. foto 9" loading="lazy"><img src="assets/autocasion/coche-01/foto-010.jpg" alt="PORSCHE Macan GTS Aut. foto 10" loading="lazy"><img src="assets/autocasion/coche-01/foto-011.jpg" alt="PORSCHE Macan GTS Aut. foto 11" loading="lazy"><img src="assets/autocasion/coche-01/foto-012.jpg" alt="PORSCHE Macan GTS Aut. foto 12" loading="lazy"><img src="assets/autocasion/coche-01/foto-013.jpg" alt="PORSCHE Macan GTS Aut. foto 13" loading="lazy"><img src="assets/autocasion/coche-01/foto-014.jpg" alt="PORSCHE Macan GTS Aut. foto 14" loading="lazy"><img src="assets/autocasion/coche-01/foto-015.jpg" alt="PORSCHE Macan GTS Aut. foto 15" loading="lazy"><img src="assets/autocasion/coche-01/foto-016.jpg" alt="PORSCHE Macan GTS Aut. foto 16" loading="lazy"><img src="assets/autocasion/coche-01/foto-017.jpg" alt="PORSCHE Macan GTS Aut. foto 17" loading="lazy"><img src="assets/autocasion/coche-01/foto-018.jpg" alt="PORSCHE Macan GTS Aut. foto 18" loading="lazy"><img src="assets/autocasion/coche-01/foto-019.jpg" alt="PORSCHE Macan GTS Aut. foto 19" loading="lazy"><img src="assets/autocasion/coche-01/foto-020.jpg" alt="PORSCHE Macan GTS Aut. foto 20" loading="lazy"><img src="assets/autocasion/coche-01/foto-021.jpg" alt="PORSCHE Macan GTS Aut. foto 21" loading="lazy"><img src="assets/autocasion/coche-01/foto-022.jpg" alt="PORSCHE Macan GTS Aut. foto 22" loading="lazy"><img src="assets/autocasion/coche-01/foto-023.jpg" alt="PORSCHE Macan GTS Aut. foto 23" loading="lazy"><img src="assets/autocasion/coche-01/foto-024.jpg" alt="PORSCHE Macan GTS Aut. foto 24" loading="lazy"><img src="assets/autocasion/coche-01/foto-025.jpg" alt="PORSCHE Macan GTS Aut. foto 25" loading="lazy"><img src="assets/autocasion/coche-01/foto-026.jpg" alt="PORSCHE Macan GTS Aut. foto 26" loading="lazy"><img src="assets/autocasion/coche-01/foto-027.jpg" alt="PORSCHE Macan GTS Aut. foto 27" loading="lazy"><img src="assets/autocasion/coche-01/foto-028.jpg" alt="PORSCHE Macan GTS Aut. foto 28" loading="lazy"><img src="assets/autocasion/coche-01/foto-029.jpg" alt="PORSCHE Macan GTS Aut. foto 29" loading="lazy"><img src="assets/autocasion/coche-01/foto-030.jpg" alt="PORSCHE Macan GTS Aut. foto 30" loading="lazy"><img src="assets/autocasion/coche-01/foto-031.jpg" alt="PORSCHE Macan GTS Aut. foto 31" loading="lazy"><img src="assets/autocasion/coche-01/foto-032.jpg" alt="PORSCHE Macan GTS Aut. foto 32" loading="lazy"><img src="assets/autocasion/coche-01/foto-033.jpg" alt="PORSCHE Macan GTS Aut. foto 33" loading="lazy"><img src="assets/autocasion/coche-01/foto-034.jpg" alt="PORSCHE Macan GTS Aut. foto 34" loading="lazy"><img src="assets/autocasion/coche-01/foto-035.jpg" alt="PORSCHE Macan GTS Aut. foto 35" loading="lazy"><img src="assets/autocasion/coche-01/foto-036.jpg" alt="PORSCHE Macan GTS Aut. foto 36" loading="lazy"><img src="assets/autocasion/coche-01/foto-037.jpg" alt="PORSCHE Macan GTS Aut. foto 37" loading="lazy"><img src="assets/autocasion/coche-01/foto-038.jpg" alt="PORSCHE Macan GTS Aut. foto 38" loading="lazy"><img src="assets/autocasion/coche-01/foto-039.jpg" alt="PORSCHE Macan GTS Aut. foto 39" loading="lazy"><img src="assets/autocasion/coche-01/foto-040.jpg" alt="PORSCHE Macan GTS Aut. foto 40" loading="lazy"><img src="assets/autocasion/coche-01/foto-041.jpg" alt="PORSCHE Macan GTS Aut. foto 41" loading="lazy"><img src="assets/autocasion/coche-01/foto-042.jpg" alt="PORSCHE Macan GTS Aut. foto 42" loading="lazy"><img src="assets/autocasion/coche-01/foto-043.jpg" alt="PORSCHE Macan GTS Aut. foto 43" loading="lazy"><img src="assets/autocasion/coche-01/foto-044.jpg" alt="PORSCHE Macan GTS Aut. foto 44" loading="lazy"><img src="assets/autocasion/coche-01/foto-045.jpg" alt="PORSCHE Macan GTS Aut. foto 45" loading="lazy"><img src="assets/autocasion/coche-01/foto-046.jpg" alt="PORSCHE Macan GTS Aut. foto 46" loading="lazy"><img src="assets/autocasion/coche-01/foto-047.jpg" alt="PORSCHE Macan GTS Aut. foto 47" loading="lazy"><img src="assets/autocasion/coche-01/foto-048.jpg" alt="PORSCHE Macan GTS Aut. foto 48" loading="lazy"><img src="assets/autocasion/coche-01/foto-049.jpg" alt="PORSCHE Macan GTS Aut. foto 49" loading="lazy"><img src="assets/autocasion/coche-01/foto-050.jpg" alt="PORSCHE Macan GTS Aut. foto 50" loading="lazy"></div>
           </div>
         </article>
-
-        <article class="car-card" data-type="suv lujo">
+        <article class="car-card" data-type="stock-real" data-stock-index="1">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&w=1000&q=80" alt="Audi Q5">
+            <img src="assets/autocasion/coche-02/foto-001.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">Audi Q5</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 31.900EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">35 FOTOS</span>
+              <p class="price">Al contado 65.000 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2023 · Gasolina · 51.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-02/foto-001.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 1" loading="lazy"><img src="assets/autocasion/coche-02/foto-002.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 2" loading="lazy"><img src="assets/autocasion/coche-02/foto-003.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 3" loading="lazy"><img src="assets/autocasion/coche-02/foto-004.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 4" loading="lazy"><img src="assets/autocasion/coche-02/foto-005.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 5" loading="lazy"><img src="assets/autocasion/coche-02/foto-006.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 6" loading="lazy"><img src="assets/autocasion/coche-02/foto-007.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 7" loading="lazy"><img src="assets/autocasion/coche-02/foto-008.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 8" loading="lazy"><img src="assets/autocasion/coche-02/foto-009.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 9" loading="lazy"><img src="assets/autocasion/coche-02/foto-010.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 10" loading="lazy"><img src="assets/autocasion/coche-02/foto-011.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 11" loading="lazy"><img src="assets/autocasion/coche-02/foto-012.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 12" loading="lazy"><img src="assets/autocasion/coche-02/foto-013.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 13" loading="lazy"><img src="assets/autocasion/coche-02/foto-014.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 14" loading="lazy"><img src="assets/autocasion/coche-02/foto-015.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 15" loading="lazy"><img src="assets/autocasion/coche-02/foto-016.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 16" loading="lazy"><img src="assets/autocasion/coche-02/foto-017.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 17" loading="lazy"><img src="assets/autocasion/coche-02/foto-018.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 18" loading="lazy"><img src="assets/autocasion/coche-02/foto-019.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 19" loading="lazy"><img src="assets/autocasion/coche-02/foto-020.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 20" loading="lazy"><img src="assets/autocasion/coche-02/foto-021.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 21" loading="lazy"><img src="assets/autocasion/coche-02/foto-022.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 22" loading="lazy"><img src="assets/autocasion/coche-02/foto-023.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 23" loading="lazy"><img src="assets/autocasion/coche-02/foto-024.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 24" loading="lazy"><img src="assets/autocasion/coche-02/foto-025.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 25" loading="lazy"><img src="assets/autocasion/coche-02/foto-026.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 26" loading="lazy"><img src="assets/autocasion/coche-02/foto-027.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 27" loading="lazy"><img src="assets/autocasion/coche-02/foto-028.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 28" loading="lazy"><img src="assets/autocasion/coche-02/foto-029.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 29" loading="lazy"><img src="assets/autocasion/coche-02/foto-030.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 30" loading="lazy"><img src="assets/autocasion/coche-02/foto-031.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 31" loading="lazy"><img src="assets/autocasion/coche-02/foto-032.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 32" loading="lazy"><img src="assets/autocasion/coche-02/foto-033.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 33" loading="lazy"><img src="assets/autocasion/coche-02/foto-034.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 34" loading="lazy"><img src="assets/autocasion/coche-02/foto-035.jpg" alt="AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic foto 35" loading="lazy"></div>
           </div>
         </article>
-
-        <article class="car-card" data-type="berlina lujo">
+        <article class="car-card" data-type="stock-real" data-stock-index="2">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1000&q=80" alt="Mercedes Clase C">
+            <img src="assets/autocasion/coche-03/foto-001.jpg" alt="PORSCHE Cayenne Diesel 245 Aut.">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">Mercedes Clase C</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 29.900EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">PORSCHE Cayenne Diesel 245 Aut.</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">22 FOTOS</span>
+              <p class="price">Al contado 49.900 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2011 · Diésel · 102.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-03/foto-001.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 1" loading="lazy"><img src="assets/autocasion/coche-03/foto-002.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 2" loading="lazy"><img src="assets/autocasion/coche-03/foto-003.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 3" loading="lazy"><img src="assets/autocasion/coche-03/foto-004.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 4" loading="lazy"><img src="assets/autocasion/coche-03/foto-005.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 5" loading="lazy"><img src="assets/autocasion/coche-03/foto-006.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 6" loading="lazy"><img src="assets/autocasion/coche-03/foto-007.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 7" loading="lazy"><img src="assets/autocasion/coche-03/foto-008.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 8" loading="lazy"><img src="assets/autocasion/coche-03/foto-009.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 9" loading="lazy"><img src="assets/autocasion/coche-03/foto-010.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 10" loading="lazy"><img src="assets/autocasion/coche-03/foto-011.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 11" loading="lazy"><img src="assets/autocasion/coche-03/foto-012.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 12" loading="lazy"><img src="assets/autocasion/coche-03/foto-013.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 13" loading="lazy"><img src="assets/autocasion/coche-03/foto-014.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 14" loading="lazy"><img src="assets/autocasion/coche-03/foto-015.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 15" loading="lazy"><img src="assets/autocasion/coche-03/foto-016.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 16" loading="lazy"><img src="assets/autocasion/coche-03/foto-017.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 17" loading="lazy"><img src="assets/autocasion/coche-03/foto-018.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 18" loading="lazy"><img src="assets/autocasion/coche-03/foto-019.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 19" loading="lazy"><img src="assets/autocasion/coche-03/foto-020.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 20" loading="lazy"><img src="assets/autocasion/coche-03/foto-021.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 21" loading="lazy"><img src="assets/autocasion/coche-03/foto-022.jpg" alt="PORSCHE Cayenne Diesel 245 Aut. foto 22" loading="lazy"></div>
           </div>
         </article>
-
-        <article class="car-card" data-type="suv lujo">
+        <article class="car-card" data-type="stock-real" data-stock-index="3">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?auto=format&fit=crop&w=1000&q=80" alt="Porsche Cayenne">
+            <img src="assets/autocasion/coche-04/foto-001.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut.">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">Porsche Cayenne</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 58.900EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">MERCEDES-BENZ Clase S Coupé 500 4M Aut.</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">31 FOTOS</span>
+              <p class="price">Al contado 48.500 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2015 · Gasolina · 99.890 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-04/foto-001.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 1" loading="lazy"><img src="assets/autocasion/coche-04/foto-002.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 2" loading="lazy"><img src="assets/autocasion/coche-04/foto-003.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 3" loading="lazy"><img src="assets/autocasion/coche-04/foto-004.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 4" loading="lazy"><img src="assets/autocasion/coche-04/foto-005.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 5" loading="lazy"><img src="assets/autocasion/coche-04/foto-006.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 6" loading="lazy"><img src="assets/autocasion/coche-04/foto-007.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 7" loading="lazy"><img src="assets/autocasion/coche-04/foto-008.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 8" loading="lazy"><img src="assets/autocasion/coche-04/foto-009.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 9" loading="lazy"><img src="assets/autocasion/coche-04/foto-010.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 10" loading="lazy"><img src="assets/autocasion/coche-04/foto-011.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 11" loading="lazy"><img src="assets/autocasion/coche-04/foto-012.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 12" loading="lazy"><img src="assets/autocasion/coche-04/foto-013.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 13" loading="lazy"><img src="assets/autocasion/coche-04/foto-014.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 14" loading="lazy"><img src="assets/autocasion/coche-04/foto-015.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 15" loading="lazy"><img src="assets/autocasion/coche-04/foto-016.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 16" loading="lazy"><img src="assets/autocasion/coche-04/foto-017.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 17" loading="lazy"><img src="assets/autocasion/coche-04/foto-018.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 18" loading="lazy"><img src="assets/autocasion/coche-04/foto-019.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 19" loading="lazy"><img src="assets/autocasion/coche-04/foto-020.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 20" loading="lazy"><img src="assets/autocasion/coche-04/foto-021.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 21" loading="lazy"><img src="assets/autocasion/coche-04/foto-022.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 22" loading="lazy"><img src="assets/autocasion/coche-04/foto-023.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 23" loading="lazy"><img src="assets/autocasion/coche-04/foto-024.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 24" loading="lazy"><img src="assets/autocasion/coche-04/foto-025.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 25" loading="lazy"><img src="assets/autocasion/coche-04/foto-026.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 26" loading="lazy"><img src="assets/autocasion/coche-04/foto-027.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 27" loading="lazy"><img src="assets/autocasion/coche-04/foto-028.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 28" loading="lazy"><img src="assets/autocasion/coche-04/foto-029.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 29" loading="lazy"><img src="assets/autocasion/coche-04/foto-030.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 30" loading="lazy"><img src="assets/autocasion/coche-04/foto-031.jpg" alt="MERCEDES-BENZ Clase S Coupé 500 4M Aut. foto 31" loading="lazy"></div>
           </div>
         </article>
-
-        <article class="car-card" data-type="compacto">
+        <article class="car-card" data-type="stock-real" data-stock-index="4">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1000&q=80" alt="Volkswagen Golf R">
+            <img src="assets/autocasion/coche-05/foto-001.jpg" alt="MINI Mini Cooper SE">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">Volkswagen Golf R</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 26.500EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">MINI Mini Cooper SE</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">39 FOTOS</span>
+              <p class="price">Al contado 17.900 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2021 · Eléctrico · 45.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-05/foto-001.jpg" alt="MINI Mini Cooper SE foto 1" loading="lazy"><img src="assets/autocasion/coche-05/foto-002.jpg" alt="MINI Mini Cooper SE foto 2" loading="lazy"><img src="assets/autocasion/coche-05/foto-003.jpg" alt="MINI Mini Cooper SE foto 3" loading="lazy"><img src="assets/autocasion/coche-05/foto-004.jpg" alt="MINI Mini Cooper SE foto 4" loading="lazy"><img src="assets/autocasion/coche-05/foto-005.jpg" alt="MINI Mini Cooper SE foto 5" loading="lazy"><img src="assets/autocasion/coche-05/foto-006.jpg" alt="MINI Mini Cooper SE foto 6" loading="lazy"><img src="assets/autocasion/coche-05/foto-007.jpg" alt="MINI Mini Cooper SE foto 7" loading="lazy"><img src="assets/autocasion/coche-05/foto-008.jpg" alt="MINI Mini Cooper SE foto 8" loading="lazy"><img src="assets/autocasion/coche-05/foto-009.jpg" alt="MINI Mini Cooper SE foto 9" loading="lazy"><img src="assets/autocasion/coche-05/foto-010.jpg" alt="MINI Mini Cooper SE foto 10" loading="lazy"><img src="assets/autocasion/coche-05/foto-011.jpg" alt="MINI Mini Cooper SE foto 11" loading="lazy"><img src="assets/autocasion/coche-05/foto-012.jpg" alt="MINI Mini Cooper SE foto 12" loading="lazy"><img src="assets/autocasion/coche-05/foto-013.jpg" alt="MINI Mini Cooper SE foto 13" loading="lazy"><img src="assets/autocasion/coche-05/foto-014.jpg" alt="MINI Mini Cooper SE foto 14" loading="lazy"><img src="assets/autocasion/coche-05/foto-015.jpg" alt="MINI Mini Cooper SE foto 15" loading="lazy"><img src="assets/autocasion/coche-05/foto-016.jpg" alt="MINI Mini Cooper SE foto 16" loading="lazy"><img src="assets/autocasion/coche-05/foto-017.jpg" alt="MINI Mini Cooper SE foto 17" loading="lazy"><img src="assets/autocasion/coche-05/foto-018.jpg" alt="MINI Mini Cooper SE foto 18" loading="lazy"><img src="assets/autocasion/coche-05/foto-019.jpg" alt="MINI Mini Cooper SE foto 19" loading="lazy"><img src="assets/autocasion/coche-05/foto-020.jpg" alt="MINI Mini Cooper SE foto 20" loading="lazy"><img src="assets/autocasion/coche-05/foto-021.jpg" alt="MINI Mini Cooper SE foto 21" loading="lazy"><img src="assets/autocasion/coche-05/foto-022.jpg" alt="MINI Mini Cooper SE foto 22" loading="lazy"><img src="assets/autocasion/coche-05/foto-023.jpg" alt="MINI Mini Cooper SE foto 23" loading="lazy"><img src="assets/autocasion/coche-05/foto-024.jpg" alt="MINI Mini Cooper SE foto 24" loading="lazy"><img src="assets/autocasion/coche-05/foto-025.jpg" alt="MINI Mini Cooper SE foto 25" loading="lazy"><img src="assets/autocasion/coche-05/foto-026.jpg" alt="MINI Mini Cooper SE foto 26" loading="lazy"><img src="assets/autocasion/coche-05/foto-027.jpg" alt="MINI Mini Cooper SE foto 27" loading="lazy"><img src="assets/autocasion/coche-05/foto-028.jpg" alt="MINI Mini Cooper SE foto 28" loading="lazy"><img src="assets/autocasion/coche-05/foto-029.jpg" alt="MINI Mini Cooper SE foto 29" loading="lazy"><img src="assets/autocasion/coche-05/foto-030.jpg" alt="MINI Mini Cooper SE foto 30" loading="lazy"><img src="assets/autocasion/coche-05/foto-031.jpg" alt="MINI Mini Cooper SE foto 31" loading="lazy"><img src="assets/autocasion/coche-05/foto-032.jpg" alt="MINI Mini Cooper SE foto 32" loading="lazy"><img src="assets/autocasion/coche-05/foto-033.jpg" alt="MINI Mini Cooper SE foto 33" loading="lazy"><img src="assets/autocasion/coche-05/foto-034.jpg" alt="MINI Mini Cooper SE foto 34" loading="lazy"><img src="assets/autocasion/coche-05/foto-035.jpg" alt="MINI Mini Cooper SE foto 35" loading="lazy"><img src="assets/autocasion/coche-05/foto-036.jpg" alt="MINI Mini Cooper SE foto 36" loading="lazy"><img src="assets/autocasion/coche-05/foto-037.jpg" alt="MINI Mini Cooper SE foto 37" loading="lazy"><img src="assets/autocasion/coche-05/foto-038.jpg" alt="MINI Mini Cooper SE foto 38" loading="lazy"><img src="assets/autocasion/coche-05/foto-039.jpg" alt="MINI Mini Cooper SE foto 39" loading="lazy"></div>
           </div>
         </article>
-
-        <article class="car-card" data-type="compacto berlina">
+        <article class="car-card" data-type="stock-real" data-stock-index="5">
           <div class="car-image">
-            <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&w=1000&q=80" alt="SEAT Leon Cupra">
+            <img src="assets/autocasion/coche-06/foto-001.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut.">
             <div class="car-overlay">
-              <a class="btn btn-primary" href="#contacto">Ver detalles</a>
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
             </div>
           </div>
           <div class="car-body">
-            <h3 class="car-name">SEAT Leon Cupra</h3>
-            <span class="badge">DISPONIBLE</span>
-            <p class="price">Desde 18.900EUR</p>
+            <div class="car-title-wrap">
+              <h3 class="car-name">MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut.</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">27 FOTOS</span>
+              <p class="price">Al contado 11.900 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2006 · Diésel · 204.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-06/foto-001.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 1" loading="lazy"><img src="assets/autocasion/coche-06/foto-002.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 2" loading="lazy"><img src="assets/autocasion/coche-06/foto-003.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 3" loading="lazy"><img src="assets/autocasion/coche-06/foto-004.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 4" loading="lazy"><img src="assets/autocasion/coche-06/foto-005.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 5" loading="lazy"><img src="assets/autocasion/coche-06/foto-006.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 6" loading="lazy"><img src="assets/autocasion/coche-06/foto-007.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 7" loading="lazy"><img src="assets/autocasion/coche-06/foto-008.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 8" loading="lazy"><img src="assets/autocasion/coche-06/foto-009.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 9" loading="lazy"><img src="assets/autocasion/coche-06/foto-010.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 10" loading="lazy"><img src="assets/autocasion/coche-06/foto-011.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 11" loading="lazy"><img src="assets/autocasion/coche-06/foto-012.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 12" loading="lazy"><img src="assets/autocasion/coche-06/foto-013.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 13" loading="lazy"><img src="assets/autocasion/coche-06/foto-014.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 14" loading="lazy"><img src="assets/autocasion/coche-06/foto-015.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 15" loading="lazy"><img src="assets/autocasion/coche-06/foto-016.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 16" loading="lazy"><img src="assets/autocasion/coche-06/foto-017.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 17" loading="lazy"><img src="assets/autocasion/coche-06/foto-018.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 18" loading="lazy"><img src="assets/autocasion/coche-06/foto-019.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 19" loading="lazy"><img src="assets/autocasion/coche-06/foto-020.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 20" loading="lazy"><img src="assets/autocasion/coche-06/foto-021.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 21" loading="lazy"><img src="assets/autocasion/coche-06/foto-022.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 22" loading="lazy"><img src="assets/autocasion/coche-06/foto-023.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 23" loading="lazy"><img src="assets/autocasion/coche-06/foto-024.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 24" loading="lazy"><img src="assets/autocasion/coche-06/foto-025.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 25" loading="lazy"><img src="assets/autocasion/coche-06/foto-026.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 26" loading="lazy"><img src="assets/autocasion/coche-06/foto-027.jpg" alt="MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut. foto 27" loading="lazy"></div>
+          </div>
+        </article>
+        <article class="car-card" data-type="stock-real" data-stock-index="6">
+          <div class="car-image">
+            <img src="assets/autocasion/coche-07/foto-001.jpg" alt="SUZUKI Swift 1.3DDiS GLX">
+            <div class="car-overlay">
+              <span class="car-overlay-hint">Pulse para ver la ficha completa</span>
+            </div>
+          </div>
+          <div class="car-body">
+            <div class="car-title-wrap">
+              <h3 class="car-name">SUZUKI Swift 1.3DDiS GLX</h3>
+            </div>
+            <div class="car-bottom-meta">
+              <span class="badge">4 FOTOS · ORIENTATIVAS</span>
+              <p class="price">Al contado 5.500 €</p>
+              <p style="color:#bdbdbd;font-size:.9rem;">2006 · Diésel · 116.000 km · Madrid</p>
+            </div>
+            <div class="mini-gallery"><img src="assets/autocasion/coche-07/foto-001.jpg" alt="SUZUKI Swift 1.3DDiS GLX foto 1" loading="lazy"><img src="assets/autocasion/coche-07/foto-002.jpg" alt="SUZUKI Swift 1.3DDiS GLX foto 2" loading="lazy"><img src="assets/autocasion/coche-07/foto-003.jpg" alt="SUZUKI Swift 1.3DDiS GLX foto 3" loading="lazy"><img src="assets/autocasion/coche-07/foto-004.jpg" alt="SUZUKI Swift 1.3DDiS GLX foto 4" loading="lazy"></div>
           </div>
         </article>
       </div>
@@ -1588,6 +2269,75 @@
     <p style="max-width: 1200px; margin: 1.5rem auto 0; color: #8f8f8f;">© 2025 R&amp;M Sportwagen · Todos los derechos reservados</p>
   </footer>
 
+  
+  <script type="application/json" id="stockDetailsData">{"cars": [{"url": "https://www.autocasion.com/coches-segunda-mano/porsche-macan-ocasion/macan-gts-aut-1-ref19926916", "name": "PORSCHE Macan GTS Aut.", "ficha": {"schema": {"name": "PORSCHE Macan Macan GTS Aut.", "brand": "PORSCHE", "color": "Gris", "short_description": "Encuentra tu PORSCHE Macan a 105000€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "105000"}, "datos_basicos": ["Matriculado: 08/2023", "57.000 km", "Garantía: Sí", "Automático", "Gasolina", "Todo Terreno", "5 asientos", "440 cv", "5 Puertas", "Gris / Metalizado"], "precio_detalle": [{"label": "Precio al contado", "value": "105.000 €"}, {"label": "Precio de venta nuevo*", "value": "111.643 €"}], "equipamiento": {"Confort": ["Dirección asistida (serie)", "Cierre centralizado con mando distancia (serie)", "Climatizador automático con dos zonas de temperatura (serie)", "Asientos deportivos GTS delanteros (8 posiciones, electricos) (serie)", "Paquete GTS en cuero (serie)", "Paquete GTS en cuero (incluye elementos en Race-Tex) (serie)", "Elevalunas eléctricos delanteros y traseros (serie)", "Alfombrilla de maletero reversible y personalizada con ribete de piel y con protección del borde de de carga OPCIONAL 285 €"], "Seguridad": ["ABS (serie)", "Airbag conductor (serie)", "Airbag acompañante (serie)", "ESP (serie)", "Control de tracción (serie)"], "Multimedia y Audio": ["Radio CD (serie)"], "Acabado interior y exterior": ["Pintura sólida (serie)", "Porsche Doppelkupplung (PDK) de 7 velocidades (serie)", "Llantas de 21 pulgadas RS Spyder Design en color Negro (mate) (serie)", "Asideros de techo en cuero OPCIONAL 882 €", "Esferas del panel de instrumentos en color Blanco OPCIONAL 557 €", "Cinturones de seguridad en color Beige Mojave OPCIONAL 502 €", "Paquete de almacenaje OPCIONAL 272 €", "Molduras laterales (sideblades) en Carbono con logotipo 'GTS' en color Negro (brillante) OPCIONAL 1.344 €", "Luces de cortesía LED con anagrama 'PORSCHE' OPCIONAL 326 €", "Colores exteriores metalizados OPCIONAL 2.701 €", "Colores metalizados OPCIONAL 1.086 €"], "Otros": ["Pendiente de equipamiento opcional (serie)"]}, "extras_seleccionados": ["Alfombrilla de maletero reversible y personalizada con ribete de piel y con protección del borde de de carga", "Asideros de techo en cuero", "Esferas del panel de instrumentos en color Blanco", "Cinturones de seguridad en color Beige Mojave", "Paquete de almacenaje", "Molduras laterales (sideblades) en Carbono con logotipo 'GTS' en color Negro (brillante)", "Luces de cortesía LED con anagrama 'PORSCHE'", "Colores exteriores metalizados", "Colores metalizados"], "ficha_tecnica": {"Carrocería": ["Medidas 4726 mm Largo", "Medidas 1927 mm Ancho", "Medidas 1596 mm Alto", "Capacidad del maletero (l) 458/1.503", "Carrocería Todo Terreno", "Número de plazas 5", "Batalla (mm) 2.807", "Peso/Masa max. autorizado (kg) 2.580", "Número de puertas 5"], "Consumos y emisiones": ["Consumo urbano (NEDC) 12,30 litros/100 km", "Consumo en carretera (NEDC) 8,40 litros/100 km", "Consumo combinado (NEDC) 9,90 litros/100 km", "CO2 combinado (NEDC) 225 g/km", "Consumo combinado (WLTP) 11,7 - 11,3 litros/100 km", "CO2 combinado (WLTP) 265 - 255 g/km", "Depósito de combustible (l) 65,00 litros"], "Motor": ["Combustible Gasolina", "Nº de cilindros 6 cilindros", "Cilindrada (cm3) 2.894", "Sobrealimentación Turbo"], "Transmisión": ["Tipo de transmisión Automática secuencial", "Tracción Todo terreno tracción total permanente", "Número de marchas 7"], "Prestaciones": ["Potencia (KW) 324", "Potencia (CV) 440", "Par (Nm) 550", "Velocidad máxima (km/h) 272", "Aceleración 0-100 km/h (s) 4,50"]}, "referencia_publicado": "Ref: 19926916 Publicado: 28/04/2026", "descripcion": ["4x4, SUV o pickup de 5 puertas puertas en venta por 105000 euros. Es un PORSCHE Macan gasolina de 440 CV con cambio automático. Tiene 57000 kilómetros.", "El PORSCHE Macan de la oferta dispone de un maletero con 1503 litros de capacidad y un depósito de combustible de 65.0 litros. Su velocidad punta es de 272 km/h y su consumo medio homologado de 0.0 l/100 km. Mide 4726 mm."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 105000, "brand": "porsche", "family": "macan", "province": "madrid", "fuel": "gasolina"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true, "nota_datos_completados": "Consumos y emisiones completados con especificaciones públicas del fabricante para Macan GTS 2.9 V6 biturbo (NEDC/WLTP)."}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/audi-q3-ocasion/rs-q3-sportback-2-5-tfsi-quattro-s-tronic-ref19926944", "name": "AUDI Q3 RS Sportback 2.5 TFSI quattro S tronic", "ficha": {"schema": {"name": "AUDI Q3 RS Q3 Sportback 2.5 TFSI quattro S tronic", "brand": "AUDI", "color": "Gris", "short_description": "Encuentra tu AUDI Q3 a 65000€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "65000"}, "datos_basicos": ["Matriculado: 05/2023", "51.000 km", "Garantía: 12 meses", "Automático", "Gasolina", "Todo Terreno", "5 asientos", "400 cv", "5 Puertas", "Gris / Metalizado"], "precio_detalle": [{"label": "Precio al contado", "value": "65.000 €"}, {"label": "Precio de venta nuevo*", "value": "83.561 €"}], "equipamiento": {"Seguridad": ["ABS (serie)", "Airbag conductor y acompañante (serie)", "Airbag de cabeza delantero (serie)", "Airbag lateral conductor y acompañante (serie)", "Airbags laterales delante y sistema de airbags para la cabeza (serie)", "Audi Pre sense basic (serie)", "Audi Pre sense front Sistema de prevención de accidentes Control por radar Avisa de un posible accidente y actúa sobre los frenos incluye detección de peatones (serie)", "Aviso de salida involuntaria de carril con aviso de cambio de carril (serie)", "Control de tracción TCS (serie)", "Desactivador Airbag acompañante (serie)", "ESP (serie)", "Faros LED con intermitentes dinámicos detrás Luz de marcha diurna, luz de cruce, luz de posición, luz de cambio de dirección (serie)", "Fijación del asiento para niños ISOFIX y Top Tether en los asientos traseros exteriores (serie)", "Indicador de presión de los neumáticos (serie)", "Lavafaros (serie)", "Llamada de emergencia y servicio Audi Connect Safety & Service MyService (10 años) (serie)", "Programa electrónico de estabilización (ESC) (serie)", "Seguro para niños, manual (serie)", "Sensor de luz y lluvia (serie)", "Sistema antirrobo de bloqueo electrónico de marcha (serie)", "Aviso de salida involuntaria de carril (serie)", "Detector de fatiga (serie)", "Asistente de luces de carretera De acuerdo con la situación de tráfico, la luz de carretera se conecta y desconecta automáticamente (serie)", "Audi parking system plus (serie)", "Aviso de salida involuntaria de carril (serie)", "Asistente de velocidad adaptativo Ayuda a regular la velocidad ajustada y la distancia respecto al vehículo que funciona por delante (serie)", "Aviso de salida involuntaria de carril con aviso de cambio de carril (serie)", "Llamada de emergencia y asistencia en carretera de Audi connect La llamada de emergencia automática puede ayudar directamente en caso de siniestro (serie)"], "Confort": ["Alfombrillas delanteras y traseras (serie)", "Apoyabrazos central delantero (serie)", "Asientos delanteros calefactables (serie)", "Asientos delanteros con ajuste manual (serie)", "Asientos delanteros con regulación eléctrica (serie)", "Audi drive select (serie)", "Cierre centralizado (serie)", "Climatizador de 2 zonas (serie)", "Dirección progresiva Dirección con desmultiplicación variable en dependencia del giro del volante y apoyo a la dirección en dependencia de la velocidad (serie)", "Elevalunas eléctricos delanteros y traseros (serie)", "Iluminación interior Módulo de techo delante y detrás, incl (serie)", "Limitador de velocidad (serie)", "Regulación lumbar eléctrica de los asientos delanteros Ajuste eléctrico de 4 vías, vertical y horizontal (serie)", "Retrovisor interior antideslumbrante manual (serie)", "Retrovisores exteriores calefactables con ajuste eléctrico, plegado manual (serie)", "Sistema Start-Stop con función recuperación (serie)", "Sistema de regulación de velocidad de crucero (Tempomat) (serie)", "Cuero napa RS (serie)", "Asientos deportivos delanteros RS (serie)", "Tapicería Alcántara/cuero RS Q3 (serie)", "Tapicería microfibra Dinamica/cuero con acolchado de rombos y grabado RS (serie)", "Banqueta trasera plus (serie)", "Paquete de iluminación ambiente de contorno, multicolor Selección de entre 30 colores (serie)", "Asientos delanteros deportivos (serie)", "Climatizador de confort de 3 zonas (serie)", "Servotronic (serie)", "Retrovisores exteriores con ajuste eléctrico y calefactables (serie)", "Paquete de iluminación ambiente Espejo de cortesía con luz para conductor y acompañante (serie)"], "Acabado interior y exterior": ["Asistente de arranque en pendiente (serie)", "Audi hold assist (serie)", "Banqueta trasera abatible en proporción 40:20:40 (serie)", "Kit antipinchazos (serie)", "Maletero con apertura y cierre eléctrico (serie)", "Marco de las entradas de aire frontales en gris platino mate (serie)", "Marco de las ventanillas en aluminio anodizado (serie)", "Molduras de entrada en las puertas con logo S iluminado (serie)", "Paquete portaobjetos y maletero Red portaobjetos en el respaldo de los asientos delanteros (serie)", "Parachoques S line, embellecedores de pasarruedas y molduras laterales (serie)", "Pintura de contraste Gris Manhattan (serie)", "Protección de cantos en el maletero de plástico (serie)", "Salpicadero en óptica Black Panel (serie)", "Volante deportivo de cuero multifunción plus de 3 radios achatado con levas (serie)", "Llantas de 20 diseño de estrella de 10 radios (8,5J x 20) (serie)", "Inserciones aluminio Race antracita (serie)", "Elementos de interior en Alcántara negro Aplicaciones en la superficie decorativa del salpicadero y en el apoyabrazos de las puertas en Alcántara negro (serie)", "Tren de rodaje deportivo RS (serie)", "Neumáticos 255/40 R20 (serie)", "Carcasa retrovisores exteriores en aluminio (serie)", "Inserciones aluminio Race antracita (serie)", "Tren de rodaje deportivo (serie)", "Barras longitudinales en el techo en aluminio anodizado (serie)", "Aplicaciones de aluminio interiores (serie)", "Protección del borde de carga en acero fino (serie)", "Revestimiento interior techo en tela color negro (serie)", "Preinstalación de gancho de remolque (serie)"], "Multimedia y Audio": ["Audi Smartphone interface (serie)", "Audi connect - Navegación e Infotainment con SIM integrada, 3 años (serie)", "Audi connect: Safety & Service con llamada de emergencia (serie)", "Control por voz (serie)", "Cuadro de instrumentos digital (serie)", "Interfaz Bluetooth (serie)", "MMI Radio plus (serie)", "Puerto USB Tipo A para carga de dispositivos externos (serie)", "Toma de corriente de 12V y 2 USB-A para las plazas traseras (serie)", "MMI navegación plus con MMI Touch (serie)", "Audi virtual cockpit plus (12 (serie)", "Radio Digital DAB La recepción de canales depende de la disponibilidad digital local Recepciona radios con el estándar DAB (incluye DAB+ y DMB) (serie)", "Audi Sound system (serie)", "MMI navegación plus con MMI Touch (serie)", "Audi connect - Navegación e Infotainment plus con SIM integrada, 3 años Además de los servicios incluidos en Audi Connect (IT4), los servicios plus de Audi Connect Infotainment incluyen: Reconocimiento por lenguaje natural mejorado (serie)", "Control a distancia de Audi connect (serie)"], "Otros": ["Cámara multifuncional para requisitos NCAP (serie)", "Herramientas de a bordo (serie)", "Parabrisas con cristal con aislamiento acústico (serie)", "Sistema de 6 altavoces (serie)", "Sistema de detección de asientos ocupados (serie)", "Tornillos antirrobo ruedas (serie)", "Sistema de escape RS (serie)", "Cámara multifuncional para requisitos NCAP (serie)"]}, "extras_seleccionados": [], "ficha_tecnica": {"Carrocería": ["Medidas 4507 mm Largo", "Medidas 1851 mm Ancho", "Medidas 1557 mm Alto", "Capacidad del maletero (l) 530/1.400", "Carrocería Todo Terreno", "Número de plazas 5", "Batalla (mm) 2.680", "Peso/Masa max. autorizado (kg) 2.250", "Número de puertas 5"], "Consumos y emisiones": ["Consumo medio 8,80 litros/100 km", "Consumo en carretera 7,30 litros/100 km", "Consumo urbano 11,50 litros/100 km", "CO2 (g/km) 202 g/km", "Depósito de combustible (l) 60,00 litros"], "Motor": ["Combustible Gasolina", "Nº de cilindros 5 cilindros", "Cilindrada (cm3) 2.480", "Sobrealimentación Turbo"], "Transmisión": ["Tipo de transmisión Automática secuencial", "Tracción Todo terreno tracción total permanente", "Número de marchas 7"], "Prestaciones": ["Potencia (KW) 294", "Potencia (CV) 400", "Par (Nm) 480", "Velocidad máxima (km/h) 250", "Aceleración 0-100 km/h (s) 4,50"]}, "referencia_publicado": "Ref: 19926944 Publicado: 28/04/2026", "descripcion": ["Venta de AUDI Q3 Gris con motor gasolina de 400 CV de potencia. El coche tiene 5 puertas puertas. Con 51000 kilómetros, el precio se queda en 65000 euros.", "El consumo medio del AUDI Q3 de la oferta es de 8.8 l/100 km, mientras que la capacidad del depósito asciende a 60.0 litros. Más información: alcanza una velocidad máxima de 250 km/h y mide 4507 mm."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 65000, "brand": "audi", "family": "q3", "province": "madrid", "fuel": "gasolina"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/porsche-cayenne-ocasion/cayenne-diesel-245-ref19153026", "name": "PORSCHE Cayenne Diesel 245 Aut.", "ficha": {"schema": {"name": "PORSCHE Cayenne Cayenne Diesel 245 Aut.", "brand": "PORSCHE", "color": "Marrón", "short_description": "Encuentra tu PORSCHE Cayenne a 49900€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "49900"}, "datos_basicos": ["Matriculado: 08/2011", "102.000 km", "Garantía: 12 meses", "Automático", "Diesel", "Todo Terreno", "5 asientos", "245 cv", "5 Puertas", "Marrón"], "precio_detalle": [{"label": "Precio al contado", "value": "49.900 €"}, {"label": "Precio de venta nuevo*", "value": "70.862 €"}], "equipamiento": {"Seguridad": ["Airbag conductor (serie)", "Airbag acompañante (serie)", "Airbag lateral (serie)", "Inmovilizador (Sistema Transponder) (serie)", "Sistema de control estabilidad Porsche (PSM) con ABS, ASR, ABD, MSR (serie)", "Faros antiniebla integrados en moldura inferior del paragolpes (serie)", "Luz diurna, tecnología LED junto a las luces auxiliares (serie)", "Airbags de cortina en el techo y en todas las ventanillas laterales desde el pilar A al C (serie)", "Anclaje para sillas de niños ISOFIX en el asiento delantero derecho y traseros exteriores (serie)"], "Multimedia y Audio": ["Ordenador de abordo (serie)", "Sistema de audio CDR-31, pantalla táctil a color 7´´, compatible MP3, 10 altavoces, 100 vatios (serie)"], "Confort": ["Dirección asistida (serie)", "Elevalunas eléctricos delanteros y traseros (serie)", "Luneta térmica trasera (serie)", "Cambio Tiptronic S 8 velocidades con función Auto Start Stop (serie)", "Cierre centralizado con mando distancia (serie)", "Retrovisores exteriores eléctricos térmicos plegables, asférico lado conductor (serie)", "Control automático de velocidad (serie)", "Climatizador automático con dos zonas de temperatura (serie)", "Asientos delanteros eléctricos con 8 posiciones (serie)", "Asientos parcialmente en cuero rugoso (serie)"], "Acabado interior y exterior": ["Llantas Cayenne Rad 18´´ (serie)", "Banco trasero abatible 40/20/40 (serie)", "Supresión designación de modelo logo Porsche y logo Diesel en el frontal (serie)"], "Otros": ["Freno de estacionamiento eléctrico (serie)", "Botón sport (serie)"]}, "extras_seleccionados": [], "ficha_tecnica": {"Carrocería": ["Medidas 4846 mm Largo", "Medidas 1939 mm Ancho", "Medidas 1705 mm Alto", "Capacidad del maletero (l) 670/1.780", "Carrocería Todo Terreno", "Número de plazas 5", "Batalla (mm) 2.895", "Peso/Masa max. autorizado (kg) 2.840", "Número de puertas 5"], "Consumos y emisiones": ["Consumo medio 7,20 litros/100 km", "Consumo en carretera 6,50 litros/100 km", "Consumo urbano 8,50 litros/100 km", "CO2 (g/km) 189 g/km", "Depósito de combustible (l) 85,00 litros"], "Motor": ["Combustible Diesel", "Nº de cilindros 6 cilindros", "Cilindrada (cm3) 2.967", "Sobrealimentación Turbo de geometría variable"], "Transmisión": ["Tipo de transmisión Automática secuencial", "Tracción Todo terreno tracción total permanente", "Número de marchas 8"], "Prestaciones": ["Potencia (KW) 180", "Potencia (CV) 245", "Par (Nm) 550", "Velocidad máxima (km/h) 220", "Aceleración 0-100 km/h (s) 7,60"]}, "referencia_publicado": "Ref: 19153026 Publicado: 17/04/2026", "descripcion": ["4x4, SUV o pickup. Se vende un PORSCHE Cayenne Marrón de segunda mano por 49900 euros. Se trata de la variante con tipo de cambio automático y el motor diésel que llega a los 245 potencia.", "Las dimensiones de este PORSCHE Cayenne son 4846 mm, la capacidad de su maletero es de 1780 litros y el de su depósito de 85.0. La velocidad máxima de este Cayenne es de 220 km/h y su consumo medio de 7.2l/100 km."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 49900, "brand": "porsche", "family": "cayenne", "province": "madrid", "fuel": "diesel"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/mercedes-benz-clase-s-ocasion/s-coupe-500-4m-ref19366356", "name": "MERCEDES-BENZ Clase S Coupé 500 4M Aut.", "ficha": {"schema": {"name": "MERCEDES-BENZ Clase S S Coupé 500 4M Aut.", "brand": "MERCEDES-BENZ", "color": "Negro", "short_description": "Encuentra tu MERCEDES-BENZ Clase S a 48500€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "48500"}, "datos_basicos": ["Matriculado: 06/2015", "99.890 km", "Garantía: 12 meses", "Automático", "Gasolina", "Coupe", "4 asientos", "455 cv", "2 Puertas", "Negro / Metalizado"], "precio_detalle": [{"label": "Precio al contado", "value": "48.500 €"}, {"label": "Precio de venta nuevo*", "value": "155.950 €"}], "equipamiento": {"Acabado interior y exterior": ["Molduras de madera de álamo negro brillante (serie)", "Red portaobjetos maletero (serie)", "Kit reparapinchazos Tire-fit (serie)", "Cambio automático 9 velocidades 9G-TRONIC PLUS (serie)", "Volante deportivo multifunción en diseño de 3 radios (serie)", "Llantas de aleación AMG 20´´ diseño multirradio color gris titanio y pulidas a alto brillo (serie)", "Pintura metalizada (serie)", "AIRMATIC (serie)", "Pintura metalizada (serie)", "Molduras de madera de álamo negro brillante (serie)", "Bloqueo independiente de la tapa del maletero OPCIONAL 90 €", "Saco para esquís OPCIONAL 463 €", "Pintura designo manufaktur designo negro moca metalizado OPCIONAL 4.465 €", "Molduras de lacado brillante designo flowing lines negro OPCIONAL 2.972 €", "Molduras de lacado brillante designo negro OPCIONAL 2.225 €", "Listones de umbral iluminados con logotipo Mercedes-Benz OPCIONAL 224 €", "Molduras de lacado brillante designo flowing lines negro OPCIONAL 2.999 €", "Protección de bajos OPCIONAL 195 €", "Techo interior designo DINAMICA gris cristal (con cuero exclusivo napa designo, si cambia de color) OPCIONAL 527 €"], "Multimedia y Audio": ["Ordenador de viaje (serie)", "Sistema de mantenimiento ASSYST (serie)", "COMAND Online (serie)", "Media Interface (serie)", "Reproductor DVD (serie)", "Head-up display OPCIONAL 1.508 €", "Módulo de teléfono con Bluetooth (perfil SAP) OPCIONAL 657 €", "Volante deportivo multifunción en madera y cuero OPCIONAL 943 €", "Sistema de sonido Burmester High-End 3D surround OPCIONAL 8.708 €"], "Confort": ["Luneta térmica trasera (serie)", "Volante regulable eléctricamente (serie)", "Asientos delanteros eléctricos (serie)", "Tempomat con Speedtronic (serie)", "Climatizador automático THERMATIC (2 zonas) (serie)", "Retrovisores exteriores abatibles eléctricamente (serie)", "Sensor de lluvia (serie)", "Keyless Go (serie)", "Alfombrillas de velours (serie)", "Kit de memorias (serie)", "Apoyabrazos central trasero (serie)", "Función de parada y arranque ECO (serie)", "Magic vision control (serie)", "Asistente para viento lateral (serie)", "Elevalunas eléctricos delanteros y traseros accionamiento confort y protección antiaprisionamiento (serie)", "Apoyabrazos abatibles para conductor y acompañante con compartimento (serie)", "Detector de asiento infantil en asiento acompañante (serie)", "Dirección directa AMG con servoasistencia variable en función de la velocidad y desmultiplicación variable del engranaje de la dirección (serie)", "Retrovisores interior y exterior (lado del conductor) antideslumbrantes (serie)", "Servocierre para las puertas y tapa del maletero (serie)", "Cierre a distancia tapa maletero (serie)", "Cristal laminado, calorífugo, insonorizante y reflectante de rayos infrarrojos todas las ventanillas (serie)", "Techo panorámico (serie)", "Asientos delanteros confort climatizados para conductor y acompañante (serie)", "Ajuste eléctrico de la columna de dirección con sistema de acceso de confort EASY-ENTRY (serie)", "Tapizado en cuero con costuras de contraste (serie)", "Tapizado en cuero (serie)", "Paquete de asistencia a la conducción Plus OPCIONAL 2.539 €", "Paquete de asientos de confort para conductor y acompañante OPCIONAL 2.539 €", "Paquete Exclusivo (S 500 4M) OPCIONAL 8.467 €", "Asientos calefactados en las plazas traseras OPCIONAL 612 €", "Airscarf OPCIONAL 971 €", "Paquete de asientos de confort para conductor y acompañante OPCIONAL 2.562 €", "Paquete Exclusivo (S 500 4M) OPCIONAL 8.543 €", "Asientos calefactados en las plazas traseras OPCIONAL 618 €", "Persiana trasera eléctrica OPCIONAL 665 €", "Parabrisas calefactado OPCIONAL 638 €", "Asientos calefactados en las plazas traseras OPCIONAL 624 €"], "Otros": ["Freno estacionamiento eléctrico (serie)", "Capó activo (serie)", "Luz de freno adaptativa parpadeante (serie)", "Asistente para señales de tráfico (serie)", "Guantera climatizada, con cerradura y alumbrado (serie)"], "Seguridad": ["Conexión automática de luces de cruce (serie)", "Airbag conductor y acompañante (serie)", "Detector ocupación del asiento acompañante (serie)", "Windowbags (serie)", "ESP (Programa electrico de estabilidad) incluye ABS, ASR, BAS (serie)", "Attention assist (Sistema de alerta por cansancio conductor) (serie)", "PRE-SAFE (serie)", "Luces traseras LED (serie)", "Airbags laterales delanteros (cabeza y tórax) y traseros (serie)", "Anclajes para sillas infantiles ISOFIX con TopTether (serie)", "Ayuda activa para aparcar (serie)", "Cámara de 360º (serie)", "Collision Prevention Assist Plus (serie)", "Control presión neumáticos (serie)", "Desconexión automática del airbag del acompañante (serie)", "Reposacabezas en asientos traseros (serie)", "ADAPTIVE BRAKE con función HOLD (serie)", "ESP con control de dinamismo en curvas (serie)", "Paquete de alumbrado LED (serie)", "Paquete de protección antirrobo (serie)", "Sistema PRE-SAFE (serie)", "Intermitentes de LED integrados en los retrovisores (serie)", "Airbag cabeza conductor y acompañante con posibilidad ampliada de adaptación para airbag acompañante (serie)"]}, "extras_seleccionados": ["Bloqueo independiente de la tapa del maletero", "Saco para esquís", "Pintura designo manufaktur designo negro moca metalizado", "Molduras de lacado brillante designo flowing lines negro", "Molduras de lacado brillante designo negro", "Listones de umbral iluminados con logotipo Mercedes-Benz", "Molduras de lacado brillante designo flowing lines negro", "Protección de bajos", "Techo interior designo DINAMICA gris cristal (con cuero exclusivo napa designo, si cambia de color)", "Head-up display", "Módulo de teléfono con Bluetooth (perfil SAP)", "Volante deportivo multifunción en madera y cuero", "Sistema de sonido Burmester High-End 3D surround", "Paquete de asistencia a la conducción Plus", "Paquete de asientos de confort para conductor y acompañante", "Paquete Exclusivo (S 500 4M)", "Asientos calefactados en las plazas traseras", "Airscarf", "Paquete de asientos de confort para conductor y acompañante", "Paquete Exclusivo (S 500 4M)", "Asientos calefactados en las plazas traseras", "Persiana trasera eléctrica", "Parabrisas calefactado", "Asientos calefactados en las plazas traseras"], "ficha_tecnica": {"Carrocería": ["Medidas 5027 mm Largo", "Medidas 1899 mm Ancho", "Medidas 1411 mm Alto", "Capacidad del maletero (l) 400/0", "Carrocería Coupe", "Número de plazas 4", "Batalla (mm) 2.945", "Peso/Masa max. autorizado (kg) 2.595", "Número de puertas 2"], "Consumos y emisiones": ["Consumo medio 9,90 litros/100 km", "Consumo en carretera 7,50 litros/100 km", "Consumo urbano 13,10 litros/100 km", "CO2 (g/km) 232 g/km", "Depósito de combustible (l) 80,00 litros"], "Motor": ["Combustible Gasolina", "Nº de cilindros 8 cilindros", "Cilindrada (cm3) 4.663", "Sobrealimentación Turbo"], "Transmisión": ["Tipo de transmisión Automática secuencial", "Tracción Tracción total permanente", "Número de marchas 7"], "Prestaciones": ["Potencia (KW) 335", "Potencia (CV) 455", "Par (Nm) 700", "Velocidad máxima (km/h) 250", "Aceleración 0-100 km/h (s) 4,60"]}, "referencia_publicado": "Ref: 19366356 Publicado: 17/04/2026", "descripcion": ["La velocidad máxima del MERCEDES-BENZ Clase S es de 250 km/h, mientras que su consumo medio de combustible es de 9.9 l/100 km. Mide 5027 mm, el maletero cubica 400 litros y el depósito tiene capacidad para 80.0 litros."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 48500, "brand": "mercedes-benz", "family": "clase-s", "province": "madrid", "fuel": "gasolina"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/mini-mini-ocasion/mini-cooper-se-3-ref19153211", "name": "MINI Mini Cooper SE", "ficha": {"schema": {"name": "MINI Mini Mini Cooper SE", "brand": "MINI", "color": "Gris", "short_description": "Encuentra tu MINI Mini a 17900€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "17900"}, "datos_basicos": ["Matriculado: 06/2021", "45.000 km", "Garantía: 12 meses", "Automático", "Corriente eléctrica", "Berlina", "4 asientos", "184 cv", "3 Puertas", "Gris / Metalizado"], "precio_detalle": [{"label": "Precio al contado", "value": "17.900 €"}, {"label": "Precio de venta nuevo*", "value": "34.200 €"}], "equipamiento": {"Seguridad": ["ABS (serie)", "ESP (serie)", "Inmovilizador electrónico vehículo (serie)", "Airbag conductor y acompañante, 4 airbags de serie, 2 frontales y 2 de cabeza y tórax (serie)", "Indicación presión neumáticos (serie)", "Control de distancia en aparcamiento (PDC) trasero (serie)", "Sensor de lluvia (serie)", "Faros de LED (serie)", "Piloto antiniebla trasero (serie)", "Fijación para asiento infantil Isofix (serie)", "Luces de freno dinámicas (serie)", "Intermitentes en blanco (serie)", "Llamada de emergencia obligatoria (serie)", "Cinturones de seguridad de tres puntos de anclaje (serie)", "Control dinámico de estabilidad (DSC) (serie)", "Indicador de presión de neumáticos (serie)", "Sensor de colisión (serie)", "Control de tracción (serie)", "Tercera luz de freno (serie)", "Reposacabezas, todas las plazas (serie)"], "Confort": ["Dirección asistida (serie)", "Asientos deportivos conductor y acompañante (serie)", "Climatizador automático (serie)", "Elevalunas eléctricos delanteros (serie)", "Alfombrillas de velours (serie)", "Volante deportivo tres brazos de cuero (serie)", "Elevalunas eléctricos traseros (serie)", "Control de crucero con función de frenado (serie)", "Toberas del limpiaparabrisas calefactables (serie)", "Paquete de iluminación (serie)", "Asiento acompañante con ajuste en altura (serie)", "Reposabrazos delantero (serie)", "Mini Driving Modes (serie)", "Tela Double Stripe Carbon Black / Carbon Black (serie)", "Sistema de cierre con cierre centralizado (serie)", "Botón de arranque/parada incl (serie)", "Cable de carga (serie)", "Parasoles (serie)", "Ajuste de la columna de dirección (serie)", "Calefacción de luneta trasera (serie)", "Enchufe (12 V) en la consola central delantera (serie)", "Flexible Charger (serie)", "Acceso de confort (serie)", "Acristalamiento de protección solar y térmica (serie)", "Guarnecido interior del techo (serie)", "Iluminación interior (serie)"], "Otros": ["Tornillos antirrobo para las llantas (serie)", "Velocímetro con totalizador kilométrico (serie)", "Español / Literatura de a bordo (serie)", "Cierre automático al arrancar (serie)", "Personal Profile (serie)", "Versión de idioma español (serie)", "Refrigerante (serie)", "Bomba de calor (serie)", "Dispositivo de carga Professional de AC (serie)", "Dispositivo de carga rápida de CC (serie)", "Protección acústica de peatones (serie)", "Batería de alta tensión (serie)", "Conmutación de recuperación (serie)", "Electromotor (serie)", "Sidescuttle con intermitente integrado (serie)", "Sistemas de regulación de dinámica de conducción (serie)", "Flexible carsharing preparation MINISHARING (serie)", "Garantia reparacion Extendida (serie)", "Battery Certificate (serie)", "Canalizador integrado en el capó del motor (serie)", "Doble bocina (serie)", "Juego de herramientas (serie)"], "Acabado interior y exterior": ["Revestimiento interior Piano Black (serie)", "Juego de reparación de neumáticos (serie)", "Anagrama de modelo (serie)", "Faldones laterales / borde de parachoques / cubierta del pasarruedas (serie)", "Llantas aleación 16´´ Revolite Spoke (serie)", "4 argollas de amarre en el maletero (serie)", "Portabebidas (serie)", "Posibilidades de almacenamiento (serie)", "Molduras decorativas (serie)", "Molduras de entrada (serie)", "Rampilla para carga (serie)", "Rejilla del radiador (serie)", "Respaldo del asiento trasero, abatible y divisible 60:40 (serie)", "Spoiler trasero en el color de techo (serie)", "Tren de rodaje de serie (serie)", "Volúmenes cromados en el exterior (serie)", "Volúmenes cromados en el interior (serie)"], "Multimedia y Audio": ["Radio MINI Visual Boost (serie)", "Sintonizador DAB (serie)", "Ordenador de a bordo (serie)", "Teleservices (serie)", "Volante multifuncional (serie)", "Servicios ConnectedDrive (serie)", "Servicios Remotos (serie)", "Connected Navigation Selección de vehículos de referencia para la revisión de Conformity of Production (COP) (serie)", "Servicios eDrive (serie)", "Cuadro de instrumentos multifuncional (serie)", "Smartphone Integration (serie)", "Sistema de navegación MINI (serie)", "Información del Tráfico en Tiempo Real (RTTI) (serie)", "Connected Navigation Selección de vehículos de referencia para la revisión de Conformity of Production (COP) (serie)"]}, "extras_seleccionados": [], "ficha_tecnica": {"Carrocería": ["Medidas 3845 mm Largo", "Medidas 1727 mm Ancho", "Medidas 1432 mm Alto", "Capacidad del maletero (l) 211/731", "Carrocería Berlina", "Número de plazas 4", "Batalla (mm) 2.495", "Peso/Masa max. autorizado (kg) 1.775", "Número de puertas 3"], "Consumos y emisiones": ["Consumo eléctrico combinado (WLTP) 17,6 - 15,2 kWh/100 km", "Consumo eléctrico combinado (NEDC) 16,1 - 14,9 kWh/100 km", "Emisiones CO2 0 g/km", "Autonomía eléctrica (WLTP) 203 - 234 km", "Batería bruta 32,60 kWh", "Batería útil 28,90 kWh"], "Motor": ["Combustible Corriente eléctrica", "Nº de cilindros - cilindros", "Cilindrada (cm3) 0", "Sobrealimentación -"], "Transmisión": ["Tipo de transmisión Directo, sin caja de cambios", "Tracción Tracción delantera", "Número de marchas 1"], "Prestaciones": ["Potencia (KW) 135", "Potencia (CV) 184", "Par (Nm) 270", "Velocidad máxima (km/h) 150", "Aceleración 0-100 km/h (s) 7,30"]}, "referencia_publicado": "Ref: 19153211 Publicado: 17/04/2026", "descripcion": ["MINI Mini de color Gris y con 45000 kilómetros a la venta por 17900 euros. El coche de esta oferta tiene un motor de 184 CV de potencia asociado a un cambio automático. Pequeño de 3 puertas puertas.", "El MINI Mini tiene un consumo medio de 0.0 l/100 km y un depósito con capacidad para 0.0. Asimismo, la velocidad máxima del Mini de la oferta es de 150 km/h y la capacidad de su maletero de 731 litros."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 17900, "brand": "mini", "family": "mini", "province": "madrid", "fuel": "electrico"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true, "nota_datos_completados": "Consumos eléctricos completados con datos técnicos públicos del modelo MINI Cooper SE."}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/mercedes-benz-clase-e-ocasion/e-320cdi-4m-elegance-ref19269699", "name": "MERCEDES-BENZ Clase E 320CDI 4M Elegance Aut.", "ficha": {"schema": {"name": "MERCEDES-BENZ Clase E E 320CDI 4M Elegance Aut.", "brand": "MERCEDES-BENZ", "color": "Azul", "short_description": "Encuentra tu MERCEDES-BENZ Clase E a 11900€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "11900"}, "datos_basicos": ["Matriculado: 07/2006", "204.000 km", "Garantía: 12 meses", "Automático", "Diesel", "Berlina", "5 asientos", "224 cv", "4 Puertas", "Azul / Metalizado"], "precio_detalle": [{"label": "Precio al contado", "value": "11.900 €"}, {"label": "Precio de venta nuevo*", "value": "59.323 €"}], "equipamiento": {"Multimedia y Audio": ["Ordenador de viaje (serie)", "Volante multifunción (serie)", "Radio Audio 20 CD con 10 altavoces (serie)"], "Confort": ["Apoyabrazos delantero (serie)", "Tempomat y Speedtronic (serie)", "Retrovovisores exteriores abatibles eléctricamente (serie)", "Cierre mando a distancia y apertura emergencia (serie)", "Elevalunas eléctricos delantero y trasero con función PRE-SAFE (serie)", "Apoyabrazos abatible trasero compartimento (serie)", "Cristales calorífugos verdes (serie)", "Sensor de lluvia con 2 barridos (serie)", "Asientos delanteros semieléctricos (serie)", "Enchufe 12V parte trasera (serie)", "Climatizador automático THERMATIC con filtro (serie)", "Columna dirección ajustable altura e inclinación (serie)", "Retrovisores exteriores calefactados (serie)", "Volante y palanca de cambio en cuero (serie)", "Filtro de partículas diesel (DPF) (serie)", "Tapicería tela Orleans (serie)", "Volante y palanca de cambio en cuero (serie)", "Retrovisor izquierdo e interior antideslumbrante automático (serie)", "Dirección paramétrica (serie)", "Filtro de partículas diesel (DPF) (serie)"], "Acabado interior y exterior": ["Cambio automático 5 marchas (serie)", "Apertura remota de maletero (serie)", "Interior en madera eucalipto (serie)", "Sistema anclaje de la carga (serie)", "Rueda repuesto minispare (serie)", "Paquete Elegance (serie)", "Llantas aleación 16´´ y 11 radios (serie)", "Paquete Avantgarde Plus Audio 20 CD con preinstalación para Garmin® MAP PILOT Cambio automático 7G-TRONIC PLUS con levas de cambio DIRECT SELECT (427) Cambio automático 9G-TRONIC con levas de cambio DIRECT SELECT (421 para E 220 BT/E 250 BT/E 300 BT/E 350 BT) Compartimentos debajo asientos delanteros Compartimento iluminado en consola central Cuadro instrumentos plateado con esferas en diseño tubular Iluminación ambiente en 3 tonalidades (neutral, solar, polar) Molduras de aluminio oscuro con rectificado estructural (serie)", "Paquete Avantgarde Plus Audio 20 CD con preinstalación para Garmin® MAP PILOT Cambio automático 7G-TRONIC PLUS con levas de cambio DIRECT SELECT (427) Cambio automático 9G-TRONIC con levas de cambio DIRECT SELECT (421 para E 220 BT/E 250 BT/E 300 BT/E 350 BT) Compartimentos debajo asientos delanteros Compartimento iluminado en consola central Cuadro instrumentos plateado con esferas en diseño tubular Iluminación ambiente en 3 tonalidades (neutral, solar, polar) Molduras de aluminio oscuro con rectificado estructural (serie)", "Paquete Elegance (serie)", "Paquete Avantgarde Plus Audio 20 CD con preinstalación para Garmin® MAP PILOT Cambio automático 7G-TRONIC PLUS con levas de cambio DIRECT SELECT (427) Cambio automático 9G-TRONIC con levas de cambio DIRECT SELECT (421 para E 220 BT/E 250 BT/E 300 BT/E 350 BT) Compartimentos debajo asientos delanteros Compartimento iluminado en consola central Cuadro instrumentos plateado con esferas en diseño tubular Iluminación ambiente en 3 tonalidades (neutral, solar, polar) Molduras de aluminio oscuro con rectificado estructural (serie)"], "Seguridad": ["Regulación interior de faros (serie)", "Cinturones con pretensores (serie)", "Windowbags (serie)", "Freno adaptativo HOLD y arranque en pendiente (serie)", "Avisador pérdida de presión neumáticos (serie)", "Conexión automática de luces de cruce (serie)", "Faros y piloto antiniebla (serie)", "Cinturones delanteros con pretensor y PRE-SAFE (serie)", "Detector ocupación del asiento acompañante (serie)", "Airbag conductor, acompañante, laterales (serie)", "Apoyacabezas activo plazas delanteras NECK PRO (serie)", "Reposacabezas traseros abatibles eléctricamente (serie)", "Bloqueo electrónico arranque ´´ELCODE´´ (serie)", "ABS+ASR+BAS+ESP (serie)", "Espejos asféricos intermitentes integrados (serie)"], "Otros": ["Depósito combustible de mayor capacidad (serie)"]}, "extras_seleccionados": [], "ficha_tecnica": {"Carrocería": ["Medidas 4852 mm Largo", "Medidas 1822 mm Ancho", "Medidas 1483 mm Alto", "Capacidad del maletero (l) 690/0", "Carrocería Berlina", "Número de plazas 5", "Batalla (mm) 2.854", "Peso/Masa max. autorizado (kg) 2.555", "Número de puertas 4"], "Consumos y emisiones": ["Consumo medio 8,30 litros/100 km", "Consumo en carretera 6,80 litros/100 km", "Consumo urbano 11,00 litros/100 km", "CO2 (g/km) 210 g/km", "Depósito de combustible (l) 80,00 litros"], "Motor": ["Combustible Diesel", "Nº de cilindros 6 cilindros", "Cilindrada (cm3) 2.987", "Sobrealimentación Turbo"], "Transmisión": ["Tipo de transmisión Automática", "Tracción Tracción total permanente", "Número de marchas 5"], "Prestaciones": ["Potencia (KW) 165", "Potencia (CV) 224", "Par (Nm) 510", "Velocidad máxima (km/h) 236", "Aceleración 0-100 km/h (s) 8,10"]}, "referencia_publicado": "Ref: 19269699 Publicado: 17/04/2026", "descripcion": ["Berlina mediana o grande de 4 puertas puertas en venta por 11900 euros. Es un MERCEDES-BENZ Clase E diésel de 224 CV con cambio automático. Tiene 204000 kilómetros.", "El MERCEDES-BENZ Clase E tiene un consumo medio de 8.3 l/100 km y un depósito con capacidad para 80.0. Asimismo, la velocidad máxima del Clase E de la oferta es de 236 km/h y la capacidad de su maletero de 690 litros."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 11900, "brand": "mercedes-benz", "family": "clase-e", "province": "madrid", "fuel": "diesel"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true}, "imagenes_orientativas": false}, {"url": "https://www.autocasion.com/coches-segunda-mano/suzuki-swift-ocasion/swift-1-3ddis-glx-ref19269573", "name": "SUZUKI Swift 1.3DDiS GLX", "ficha": {"schema": {"name": "SUZUKI Swift Swift 1.3DDiS GLX", "brand": "SUZUKI", "color": "Gris", "short_description": "Encuentra tu SUZUKI Swift a 5500€ en Autocasión, los mejores coches de segunda mano y nuevos del mercado.", "price_eur": "5500"}, "datos_basicos": ["Matriculado: 05/2006", "116.000 km", "Garantía: 12 meses", "Manual", "Diesel", "Berlina", "5 asientos", "69 cv", "5 Puertas", "Gris"], "precio_detalle": [{"label": "Precio al contado", "value": "5.500 €"}, {"label": "Precio de venta nuevo*", "value": "14.959 €"}], "equipamiento": {"Seguridad": ["4/5 apoyacabezas (serie)", "ABS (serie)", "Airbag lateral (serie)", "Airbag acompañante (serie)", "Airbag conductor (serie)", "Airbags de cortina delanteros y traseros (serie)", "Cierre de seguridad para niños en puertas traseras (serie)", "Cinturones con pretensores (serie)", "E (serie)", "Faros antiniebla (serie)", "ISO-FIX asientos niños (2 traseros) (serie)", "Inmovilizador electrónico (serie)", "Tercera luz de freno (serie)"], "Confort": ["Aire acondicionado (serie)", "Asiento conductor de altura regulable (serie)", "Cerradura centralizada mando a distancia (serie)", "Cristales tintados (Privacy glass) (serie)", "Elevalunas eléctricos delanteros (serie)", "Filtro interior (serie)", "Lavaparabrisas posterior (serie)", "Luneta térmica trasera (serie)", "Luz en maletero (2 posiciones) (serie)", "Luz interior (3 posiciones) (serie)", "Dirección asistida (serie)", "Retrovisores eléctricos (serie)", "Espejo retrovisor día/noche (serie)", "Dirección asistida (serie)"], "Acabado interior y exterior": ["Llantas de aleación ligeras de 15´´ ó 16 (serie)", "Parachoques del color del vehículo (serie)"], "Multimedia y Audio": ["Radio CD (serie)", "Reloj (serie)", "Tacómetro (serie)"]}, "extras_seleccionados": [], "ficha_tecnica": {"Carrocería": ["Medidas 3695 mm Largo", "Medidas 1690 mm Ancho", "Medidas 1500 mm Alto", "Capacidad del maletero (l) 0/0", "Carrocería Berlina", "Número de plazas 5", "Batalla (mm) 2.380", "Peso/Masa max. autorizado (kg) 1.525", "Número de puertas 5"], "Consumos y emisiones": ["Consumo medio 4,60 litros/100 km", "Consumo en carretera 4,00 litros/100 km", "Consumo urbano 5,70 litros/100 km", "CO2 (g/km) 122 g/km", "Depósito de combustible (l) 45,00 litros"], "Motor": ["Combustible Diesel", "Nº de cilindros 4 cilindros", "Cilindrada (cm3) 1.248", "Sobrealimentación -"], "Transmisión": ["Tipo de transmisión Manual", "Tracción Tracción delantera", "Número de marchas 5"], "Prestaciones": ["Potencia (KW) 51", "Potencia (CV) 69", "Par (Nm) 170", "Velocidad máxima (km/h) 165", "Aceleración 0-100 km/h (s) 14,20"]}, "referencia_publicado": "Ref: 19269573 Publicado: 17/04/2026", "descripcion": ["SUZUKI Swift de color Gris y con 116000 kilómetros a la venta por 5500 euros. El coche de esta oferta tiene un motor de 69 CV de potencia asociado a un cambio manual. Pequeño de 5 puertas puertas.", "Las dimensiones de este SUZUKI Swift son 3695 mm, la capacidad de su maletero es de - litros y el de su depósito de 45.0 litros. Tiene un consumo medio de 4.6 l/100 km y alcanza una velocidad máxima de 165 km/h."], "metadatos_anuncio": {"type_ad": "ocasion", "type_advertiser": "profesional", "price": 5500, "brand": "suzuki", "family": "swift", "province": "madrid", "fuel": "diesel"}, "vendedor": {"nombre": "R&M SPORTWAGEN", "tipo": "Profesional", "perfil_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5", "mas_info_url": "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5?profTab=anuncios", "telefono": "919 37 82 12"}, "fuente_autoocasion": true}, "imagenes_orientativas": true}]}</script>
+  <div id="vehicleListingPage" class="listing-page" role="dialog" aria-modal="true" aria-labelledby="listingTitleHeading" aria-hidden="true">
+    <header class="listing-head">
+      <a href="#catalogo" class="listing-brand" id="listingBackBrand">R&amp;M Sportwagen</a>
+      <div class="listing-stepper">
+        <button type="button" id="listingPrevBtn" class="btn-ghost-small">Anterior</button>
+        <span id="listingCounter" class="detail-muted" style="margin: 0;">— / —</span>
+        <button type="button" id="listingNextBtn" class="btn-ghost-small">Siguiente</button>
+      </div>
+      <div class="listing-nav-cluster">
+        <button type="button" id="listingBackCatalog" class="btn-ghost-small">Volver al catalogo</button>
+        <a href="#inicio" id="listingGoHome" class="btn-ghost-small">Ir al inicio</a>
+        <a href="#contacto" id="listingGoContact" class="btn-ghost-small">Contacto</a>
+        <button type="button" id="listingCloseBtn" class="btn-ghost-small">Cerrar</button>
+      </div>
+    </header>
+
+    <div class="listing-main-scroller">
+      <div class="listing-inner-wrap">
+        <p id="listingPhotoBanner" class="listing-photo-banner" hidden>Fotografia orientativa: las imagenes muestran un Suzuki Swift similar y pueden no coincidir con la unidad en exposicion.</p>
+
+        <div class="listing-layout">
+          <div class="listing-media">
+            <div class="listing-hero-wrap">
+              <button type="button" class="listing-arrow left" id="listingPhotoPrev" aria-label="Foto anterior">‹</button>
+              <img src="" alt="" class="listing-hero" id="listingHeroImg" width="1280" height="720">
+              <button type="button" class="listing-arrow right" id="listingPhotoNext" aria-label="Foto siguiente">›</button>
+            </div>
+            <p class="listing-hero-hint">Haz click en la foto para verla en grande.</p>
+            <div id="listingThumbRow" class="listing-thumbs"></div>
+          </div>
+
+          <div class="listing-info-block stock-detail-root" id="listingDetailRoot">
+            <h2 id="listingTitleHeading"></h2>
+            <p class="detail-price-m" id="listingPriceEl"></p>
+            <p class="detail-meta-m" id="listingMetaEl"></p>
+
+            <div class="detail-tabbar js-stock-tabbar" role="tablist" aria-label="Secciones del anuncio"></div>
+            <div class="js-stock-tabpanels" id="listingTabPanels">
+              <section class="detail-tabpanel active" data-panel="resumen" role="tabpanel" aria-label="Detalles"></section>
+              <section class="detail-tabpanel" data-panel="precio" role="tabpanel" aria-label="Precio"></section>
+              <section class="detail-tabpanel" data-panel="equipo" role="tabpanel" aria-label="Equipamiento"></section>
+              <section class="detail-tabpanel" data-panel="extras" role="tabpanel" aria-label="Extras opcionales"></section>
+              <section class="detail-tabpanel" data-panel="tec" role="tabpanel" aria-label="Ficha tecnica"></section>
+              <section class="detail-tabpanel" data-panel="vendedor" role="tabpanel" aria-label="Vendedor"></section>
+              <section class="detail-tabpanel" data-panel="texto" role="tabpanel" aria-label="Descripcion"></section>
+            </div>
+
+            <div class="listing-foot-actions">
+              <button type="button" class="btn btn-secondary" id="listingFootClose">Salir del anuncio</button>
+              <a href="#contacto" class="btn btn-primary">Consultar disponibilidad</a>
+              <p class="listing-foot-note">
+                Toda la informacion visible del anuncio se integra en esta ficha para que el cliente pueda decidir sin salir de vuestra web.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="photo-lightbox" id="photoLightbox" aria-hidden="true">
+    <button type="button" class="close-lb" id="photoLightboxClose" aria-label="Cerrar foto">×</button>
+    <button type="button" class="listing-arrow left" id="lightboxPrev" aria-label="Foto anterior">‹</button>
+    <img src="" alt="" id="photoLightboxImg" width="1800" height="1200">
+    <button type="button" class="listing-arrow right" id="lightboxNext" aria-label="Foto siguiente">›</button>
+  </div>
+
   <script>
     const preloader = document.getElementById("preloader");
     window.addEventListener("load", () => {
@@ -1657,19 +2407,412 @@
     }, { threshold: 0.4 });
     statsObserver.observe(statsEl);
 
-    const filterBtns = document.querySelectorAll(".filter-btn");
-    const carCards = document.querySelectorAll(".car-card");
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        filterBtns.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const selected = btn.dataset.filter;
-        carCards.forEach((card) => {
-          const types = card.dataset.type;
-          const visible = selected === "all" || types.includes(selected);
-          card.style.display = visible ? "flex" : "none";
-        });
+    const listingPage = document.getElementById("vehicleListingPage");
+    const listingScroller = listingPage?.querySelector(".listing-main-scroller");
+    const heroImg = document.getElementById("listingHeroImg");
+    const thumbRow = document.getElementById("listingThumbRow");
+    const titleEl = document.getElementById("listingTitleHeading");
+    const priceEl = document.getElementById("listingPriceEl");
+    const metaEl = document.getElementById("listingMetaEl");
+    const listingDetailRoot = document.getElementById("listingDetailRoot");
+    const listingPhotoBanner = document.getElementById("listingPhotoBanner");
+    const listingCounter = document.getElementById("listingCounter");
+    const listingPhotoPrev = document.getElementById("listingPhotoPrev");
+    const listingPhotoNext = document.getElementById("listingPhotoNext");
+    const lightbox = document.getElementById("photoLightbox");
+    const lightboxImg = document.getElementById("photoLightboxImg");
+    const lightboxClose = document.getElementById("photoLightboxClose");
+    const lightboxPrev = document.getElementById("lightboxPrev");
+    const lightboxNext = document.getElementById("lightboxNext");
+    let activePhotoList = [];
+    let activePhotoIndex = 0;
+
+    let stockPayloadCache = null;
+    function getStockPayload() {
+      if (stockPayloadCache) return stockPayloadCache;
+      const el = document.getElementById("stockDetailsData");
+      try {
+        stockPayloadCache = el ? JSON.parse(el.textContent) : { cars: [] };
+      } catch {
+        stockPayloadCache = { cars: [] };
+      }
+      if (!Array.isArray(stockPayloadCache.cars)) stockPayloadCache.cars = [];
+      return stockPayloadCache;
+    }
+
+    function escHtml(s) {
+      if (s == null) return "";
+      return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function setDetailPanelHtml(panelId, html, panelsRoot) {
+      const p = panelsRoot.querySelector(`.detail-tabpanel[data-panel="${panelId}"]`);
+      if (p) p.innerHTML = html;
+    }
+
+    function setDetailTab(id, tabbar, panelsRoot) {
+      panelsRoot.querySelectorAll(".detail-tabpanel").forEach((el) => {
+        el.classList.toggle("active", el.dataset.panel === id);
       });
+      tabbar.querySelectorAll(".detail-tabc").forEach((btn) => {
+        const on = btn.dataset.tab === id;
+        btn.classList.toggle("active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+    }
+
+    function populateDetailFromFicha(ficha, rootEl) {
+      const f = ficha && typeof ficha === "object" ? ficha : {};
+      const tabbar = rootEl.querySelector(".js-stock-tabbar");
+      const panelsRoot = rootEl.querySelector(".js-stock-tabpanels");
+      if (!tabbar || !panelsRoot) return;
+      const defs = [
+        { id: "resumen", label: "Detalles" },
+        { id: "precio", label: "Precio" },
+        { id: "equipo", label: "Equipamiento" },
+        { id: "extras", label: "Extras" },
+        { id: "tec", label: "Ficha técnica" },
+        { id: "vendedor", label: "Vendedor" },
+        { id: "texto", label: "Descripción" },
+      ];
+      tabbar.innerHTML = defs
+        .map(
+          (d, i) =>
+            `<button type="button" class="detail-tabc${i === 0 ? " active" : ""}" role="tab" aria-selected="${i === 0 ? "true" : "false"}" data-tab="${d.id}">${escHtml(d.label)}</button>`
+        )
+        .join("");
+
+      const chips = Array.isArray(f.datos_basicos) ? f.datos_basicos : [];
+      let resumenHtml = `<div class="detail-chips">`;
+      resumenHtml += chips.length
+        ? chips.map((t) => `<span class="detail-chip">${escHtml(t)}</span>`).join("")
+        : `<span class="detail-muted">No hay datos básicos en la ficha sincronizada.</span>`;
+      resumenHtml += `</div>`;
+      if (f.schema && f.schema.color) {
+        resumenHtml += `<p class="detail-muted" style="margin-top:0.75rem">Color (ficha): ${escHtml(f.schema.color)}</p>`;
+      }
+      const com = f.comentario_vendedor;
+      if (com && String(com).trim()) {
+        resumenHtml += `<div class="detail-spec-block" style="margin-top:1rem"><h4>Comentario del vendedor</h4><div class="detail-prose"><p>${escHtml(String(com).trim())}</p></div></div>`;
+      } else {
+        resumenHtml += `<p class="detail-muted" style="margin-top:0.85rem">La mayor parte de datos del anuncio ya está aquí integrada. Si algún anuncio no publica comentario largo en origen, esta sección mostrará el resto de información completa disponible.</p>`;
+      }
+      setDetailPanelHtml("resumen", resumenHtml, panelsRoot);
+
+      const precioRows = Array.isArray(f.precio_detalle) ? f.precio_detalle : [];
+      let precioInner = "";
+      const rowsKept = precioRows.filter((row) => row && (String(row.label || "").trim() || String(row.value || "").trim()));
+      if (rowsKept.length) {
+        precioInner =
+          `<dl class="detail-dl">` +
+          rowsKept
+            .map((row) => {
+              const v = String(row.value || "").trim();
+              return `<div><dt>${escHtml(row.label || "")}</dt><dd>${v ? escHtml(v) : "—"}</dd></div>`;
+            })
+            .join("") +
+          `</dl>`;
+      } else {
+        precioInner = `<p class="detail-muted">Sin desglose de precio en la ficha.</p>`;
+      }
+      precioInner += `<p class="detail-muted">* «Precio de venta nuevo» se muestra como referencia histórica cuando está disponible en la ficha técnica original.</p>`;
+      setDetailPanelHtml("precio", precioInner, panelsRoot);
+
+      const equip = f.equipamiento && typeof f.equipamiento === "object" ? f.equipamiento : {};
+      const equipKeys = Object.keys(equip).sort();
+      let equipHtml = "";
+      if (equipKeys.length) {
+        equipHtml = equipKeys
+          .map((cat, idx) => {
+            const items = Array.isArray(equip[cat]) ? equip[cat] : [];
+            const body = items.length
+              ? `<ul class="detail-list">${items.map((it) => `<li>${escHtml(it)}</li>`).join("")}</ul>`
+              : `<p class="detail-muted" style="padding:0.5rem 0.85rem">Sin ítems en esta categoría.</p>`;
+            return `<details class="detail-equip-acc"${idx === 0 ? " open" : ""}><summary>${escHtml(cat)}</summary>${body}</details>`;
+          })
+          .join("");
+      } else {
+        equipHtml = `<p class="detail-muted">Sin listado de equipamiento en la ficha descargada.</p>`;
+      }
+      setDetailPanelHtml("equipo", equipHtml, panelsRoot);
+
+      const extras = Array.isArray(f.extras_seleccionados) ? f.extras_seleccionados : [];
+      const extrasHtml = extras.length
+        ? `<ul class="detail-list">${extras.map((x) => `<li>${escHtml(x)}</li>`).join("")}</ul>`
+        : `<p class="detail-muted">No constan extras opcionales en la ficha estática (o no estaban publicados en la página descargada).</p>`;
+      setDetailPanelHtml("extras", extrasHtml, panelsRoot);
+
+      const ft = f.ficha_tecnica && typeof f.ficha_tecnica === "object" ? f.ficha_tecnica : {};
+      const ftKeys = Object.keys(ft);
+      let tecHtml = "";
+      if (ftKeys.length) {
+        tecHtml = ftKeys
+          .map((section) => {
+            const lines = Array.isArray(ft[section]) ? ft[section] : [];
+            const ul = lines.length ? `<ul class="detail-list">${lines.map((line) => `<li>${escHtml(line)}</li>`).join("")}</ul>` : "";
+            return `<div class="detail-spec-block"><h4>${escHtml(section)}</h4>${ul || `<p class="detail-muted">Sin datos.</p>`}</div>`;
+          })
+          .join("");
+      } else {
+        tecHtml = `<p class="detail-muted">Ficha técnica no incluida en la sincronización para este modelo.</p>`;
+      }
+      if (f.nota_datos_completados) {
+        tecHtml += `<p class="detail-muted">${escHtml(f.nota_datos_completados)}</p>`;
+      }
+      setDetailPanelHtml("tec", tecHtml, panelsRoot);
+
+      const vend = f.vendedor && typeof f.vendedor === "object" ? f.vendedor : {};
+      const metaAd = f.metadatos_anuncio && typeof f.metadatos_anuncio === "object" ? f.metadatos_anuncio : {};
+      const vendorRows = [];
+      if (vend.nombre) vendorRows.push({ k: "Nombre", v: vend.nombre });
+      if (vend.tipo) vendorRows.push({ k: "Tipo", v: vend.tipo });
+      if (vend.telefono) vendorRows.push({ k: "Teléfono", v: vend.telefono });
+      if (metaAd.type_advertiser) vendorRows.push({ k: "Clasificación", v: metaAd.type_advertiser });
+      if (metaAd.province) vendorRows.push({ k: "Provincia", v: metaAd.province });
+      if (metaAd.fuel) vendorRows.push({ k: "Combustible", v: metaAd.fuel });
+      if (metaAd.brand) vendorRows.push({ k: "Marca", v: metaAd.brand });
+      if (metaAd.family) vendorRows.push({ k: "Familia", v: metaAd.family });
+      let vendHtml = "";
+      if (vendorRows.length) {
+        vendHtml =
+          `<dl class="detail-dl">` +
+          vendorRows.map((r) => `<div><dt>${escHtml(r.k)}</dt><dd>${escHtml(r.v)}</dd></div>`).join("") +
+          `</dl>`;
+      } else {
+        vendHtml = `<p class="detail-muted">No se pudo extraer bloque de vendedor para este anuncio.</p>`;
+      }
+      setDetailPanelHtml("vendedor", vendHtml, panelsRoot);
+
+      const desc = Array.isArray(f.descripcion) ? f.descripcion : [];
+      let textoHtml = desc.length ? `<div class="detail-prose">${desc.map((p) => `<p>${escHtml(p)}</p>`).join("")}</div>` : `<p class="detail-muted">Sin descripción editorial en la ficha.</p>`;
+      if (f.referencia_publicado) textoHtml += `<p class="detail-ref">${escHtml(f.referencia_publicado)}</p>`;
+      setDetailPanelHtml("texto", textoHtml, panelsRoot);
+
+      setDetailTab("resumen", tabbar, panelsRoot);
+    }
+
+    function parseHashVehiculo() {
+      const m = /^#vehiculo=(\d+)$/.exec(location.hash || "");
+      if (!m) return null;
+      return Number.parseInt(m[1], 10);
+    }
+
+    function listingFromHash() {
+      const i = parseHashVehiculo();
+      return i !== null && Number.isFinite(i) ? i : null;
+    }
+
+    function listingShow(show) {
+      if (!listingPage) return;
+      listingPage.classList.toggle("show", show);
+      listingPage.setAttribute("aria-hidden", show ? "false" : "true");
+      document.body.classList.toggle("listing-active", show);
+    }
+
+    function listingClose() {
+      closeLightbox();
+      if (window.location.hash && window.location.hash.startsWith("#vehiculo=")) {
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }
+      listingShow(false);
+    }
+
+    function fillListingGallery(imgsNodes, fallbackImg) {
+      thumbRow.innerHTML = "";
+      activePhotoList = [];
+      activePhotoIndex = 0;
+      if (!imgsNodes.length && fallbackImg) {
+        imgsNodes = [fallbackImg];
+      }
+      if (!imgsNodes.length) {
+        thumbRow.innerHTML = '<span style="color:#989898;font-size:.9rem;">No hay fotos en fichero para este vehiculo.</span>';
+        heroImg.src = "";
+        heroImg.alt = "";
+        return;
+      }
+      imgsNodes.forEach((spec, ix) => {
+        const thumb = document.createElement("img");
+        thumb.src = (spec.currentSrc || spec.src || "").trim();
+        thumb.alt = spec.alt || (titleEl.textContent + " " + (ix + 1));
+        activePhotoList.push({ src: thumb.src, alt: thumb.alt });
+        thumb.loading = ix < 14 ? "eager" : "lazy";
+        thumb.className = ix === 0 ? "active" : "";
+        thumb.addEventListener("click", () => {
+          setActivePhoto(ix);
+        });
+        thumbRow.appendChild(thumb);
+      });
+      setActivePhoto(0);
+    }
+
+    function setActivePhoto(index) {
+      if (!activePhotoList.length) return;
+      const len = activePhotoList.length;
+      let nx = index;
+      if (nx < 0) nx = len - 1;
+      if (nx >= len) nx = 0;
+      activePhotoIndex = nx;
+      const p = activePhotoList[nx];
+      heroImg.src = p.src;
+      heroImg.alt = p.alt;
+      thumbRow.querySelectorAll("img").forEach((el, i) => {
+        const on = i === nx;
+        el.classList.toggle("active", on);
+        if (on) el.scrollIntoView({ block: "nearest", inline: "nearest" });
+      });
+      if (lightbox.classList.contains("show")) {
+        lightboxImg.src = p.src;
+        lightboxImg.alt = p.alt;
+      }
+    }
+
+    function stepPhoto(delta) {
+      if (!activePhotoList.length) return;
+      setActivePhoto(activePhotoIndex + delta);
+    }
+
+    function openLightbox() {
+      if (!activePhotoList.length) return;
+      lightbox.classList.add("show");
+      lightbox.setAttribute("aria-hidden", "false");
+      lightboxImg.src = heroImg.src;
+      lightboxImg.alt = heroImg.alt;
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("show");
+      lightbox.setAttribute("aria-hidden", "true");
+    }
+
+    function openListingUI(index) {
+      const stock = getStockPayload();
+      const cars = stock.cars;
+      if (!cars[index]) return;
+      const entry = cars[index];
+      const card = document.querySelector("#carsGrid .car-card[data-stock-index=\"" + index + "\"]");
+      titleEl.textContent = card?.querySelector(".car-name")?.textContent || entry.name || "";
+      priceEl.textContent = card?.querySelector(".price")?.textContent || "";
+      const metaP = card ? [...card.querySelectorAll(".car-body p")].find((p) => p.textContent.includes("·")) : null;
+      metaEl.textContent = metaP ? metaP.textContent : "";
+
+      populateDetailFromFicha(entry.ficha || {}, listingDetailRoot);
+
+      if (entry.imagenes_orientativas) {
+        listingPhotoBanner.hidden = false;
+        listingPhotoBanner.textContent =
+          "Las imagenes son solo orientativas (Suzuki Swift de referencia: Wikimedia Commons y una imagen tipo Unsplash): color, equipo, interior o año pueden diferir del vehiculo en venta. Solicite fotos reales del coche por telefono o visita.";
+      } else {
+        listingPhotoBanner.hidden = true;
+      }
+
+      const imgs = [...(card?.querySelectorAll(".mini-gallery img") || [])];
+      const mainImgEl = card?.querySelector(".car-image img") || null;
+      fillListingGallery(imgs, mainImgEl);
+
+      listingCounter.textContent = index + 1 + " / " + cars.length;
+      listingShow(true);
+      if (listingScroller) listingScroller.scrollTop = 0;
+      requestAnimationFrame(() => document.getElementById("listingBackCatalog").focus());
+    }
+
+    function applyHashToListing() {
+      const ix = listingFromHash();
+      const stock = getStockPayload();
+      if (ix !== null && stock.cars[ix]) openListingUI(ix);
+      else listingShow(false);
+    }
+
+    listingPage?.addEventListener("click", (e) => {
+      const tabBtn = e.target.closest(".detail-tabc");
+      const root = listingDetailRoot;
+      if (!tabBtn || !root.contains(tabBtn)) return;
+      const tabbar = root.querySelector(".js-stock-tabbar");
+      const panelsRoot = root.querySelector(".js-stock-tabpanels");
+      setDetailTab(tabBtn.dataset.tab, tabbar, panelsRoot);
+    });
+
+    document.getElementById("listingBackCatalog").addEventListener("click", (e) => {
+      e.preventDefault();
+      listingClose();
+      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    document.getElementById("listingBackBrand").addEventListener("click", (e) => {
+      e.preventDefault();
+      listingClose();
+      document.getElementById("catalogo")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    ["listingGoHome", "listingGoContact"].forEach((id) => {
+      const a = document.getElementById(id);
+      if (a) a.addEventListener("click", () => listingClose());
+    });
+
+    document.getElementById("listingCloseBtn").addEventListener("click", listingClose);
+    document.getElementById("listingFootClose").addEventListener("click", listingClose);
+
+    document.getElementById("listingPrevBtn").addEventListener("click", () => stepListing(-1));
+    document.getElementById("listingNextBtn").addEventListener("click", () => stepListing(1));
+    listingPhotoPrev?.addEventListener("click", () => stepPhoto(-1));
+    listingPhotoNext?.addEventListener("click", () => stepPhoto(1));
+    heroImg?.addEventListener("click", openLightbox);
+    lightboxClose?.addEventListener("click", closeLightbox);
+    lightbox?.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    lightboxPrev?.addEventListener("click", () => stepPhoto(-1));
+    lightboxNext?.addEventListener("click", () => stepPhoto(1));
+
+    function stepListing(delta) {
+      const stock = getStockPayload();
+      const n = stock.cars.length;
+      const cur = parseHashVehiculo();
+      if (cur === null || !Number.isFinite(cur) || n < 2) return;
+      let nx = cur + delta;
+      if (nx < 0) nx = n - 1;
+      if (nx >= n) nx = 0;
+      location.hash = "vehiculo=" + nx;
+    }
+
+    const carsGrid = document.getElementById("carsGrid");
+    carsGrid?.querySelectorAll(".car-card").forEach((card) => {
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("role", "button");
+    });
+
+    carsGrid?.addEventListener("keydown", (e) => {
+      const card = e.target.closest(".car-card");
+      if (!card || !carsGrid.contains(card)) return;
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        const ix = Number.parseInt(card.getAttribute("data-stock-index"), 10);
+        if (Number.isFinite(ix)) location.hash = "vehiculo=" + ix;
+      }
+    });
+
+    carsGrid?.addEventListener("click", (e) => {
+      const card = e.target.closest(".car-card");
+      if (!card || !carsGrid.contains(card)) return;
+      const ix = Number.parseInt(card.getAttribute("data-stock-index"), 10);
+      if (Number.isFinite(ix)) location.hash = "vehiculo=" + ix;
+    });
+
+    window.addEventListener("hashchange", applyHashToListing);
+    window.addEventListener("load", applyHashToListing);
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("show")) {
+        closeLightbox();
+        return;
+      }
+      if (e.key === "Escape" && listingPage?.classList.contains("show")) listingClose();
+      if (listingPage?.classList.contains("show")) {
+        if (e.key === "ArrowLeft") stepPhoto(-1);
+        if (e.key === "ArrowRight") stepPhoto(1);
+      }
     });
 
     const slides = document.getElementById("slides");
