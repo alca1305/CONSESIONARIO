@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="description" content="R&M Sportwagen - Concesionario de automoviles de prestigio en Mostoles, Madrid. Vehiculos premium, asesoramiento experto y confianza total.">
   <title>R&M Sportwagen | Tu coche ideal en Mostoles</title>
   <link rel="icon" href="favicon.ico">
@@ -32,6 +32,10 @@
 
     html {
       scroll-behavior: smooth;
+      width: 100%;
+      overflow-x: clip;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
     }
 
     body {
@@ -39,7 +43,8 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      overflow-x: hidden;
+      width: 100%;
+      overflow-x: clip;
     }
 
     img {
@@ -1806,17 +1811,34 @@
       }
 
       .nav-inner {
-        gap: 0.6rem;
+        position: relative;
+        min-height: 38px;
+        justify-content: center;
+        gap: 0;
+      }
+
+      .brand {
+        margin-inline: auto;
+      }
+
+      .hamburger {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        min-width: 88px;
+        height: 36px;
       }
 
       .brand img {
         height: 34px;
-        max-width: 180px;
+        max-width: min(52vw, 180px);
       }
 
       .mobile-menu {
         left: 0.55rem;
         right: 0.55rem;
+        max-width: calc(100vw - 1.1rem);
       }
 
       .section {
