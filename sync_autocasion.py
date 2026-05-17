@@ -8,13 +8,13 @@ from urllib.parse import urljoin, urlparse
 import requests
 
 DEALER_URL = "https://www.autocasion.com/profesional/r-m-sportwagen-adv-66fbf2062815a5"
+AUTOSCOUT24_DEALER_URL = "https://www.autoscout24.es/profesionales/r-y-m-sportwagen-mostoles"
 BASE_URL = "https://www.autocasion.com"
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64)",
     "Accept-Language": "es-ES,es;q=0.9",
 }
 
-DROP_STOCK_NAMES = frozenset({"MINI One 3P"})
 SWIFT_ILUSTRATIVAS_URLS = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/2018_Suzuki_Swift_SZ5_Boosterjet_SHVS_1.0_Front.jpg/1280px-2018_Suzuki_Swift_SZ5_Boosterjet_SHVS_1.0_Front.jpg",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/2020_Suzuki_Swift_Facelift_IMG_1880.jpg/1280px-2020_Suzuki_Swift_Facelift_IMG_1880.jpg",
@@ -115,6 +115,70 @@ def enrich_missing_specs_from_public_sources(cars: list[dict]) -> None:
                 ficha["nota_datos_completados"] = (
                     "Consumos eléctricos completados con datos técnicos públicos del modelo MINI Cooper SE."
                 )
+
+
+def fetch_autoscout24_listing_images() -> dict[str, list[str]]:
+    """Mapa titulo listado AutoScout24 -> URLs de imagen en alta resolucion."""
+    try:
+        response = requests.get(AUTOSCOUT24_DEALER_URL, headers=HEADERS, timeout=35)
+        if response.status_code != 200:
+            return {}
+        page = response.text
+    except requests.RequestException:
+        return {}
+
+    catalog: dict[str, list[str]] = {}
+    for guid in set(re.findall(r"listing-images/([a-f0-9-]{36})_[a-f0-9-]+", page)):
+        idx = page.find(guid)
+        if idx == -1:
+            continue
+        snippet = page[max(0, idx - 3000) : idx + 500]
+        title_match = re.search(r"<h2>([^<]+)", snippet)
+        if not title_match:
+            continue
+        title = re.sub(r"\s+", " ", html.unescape(title_match.group(1))).strip()
+        pattern = (
+            rf"https://prod\.pictures\.autoscout24\.net/listing-images/{re.escape(guid)}_[^\s\"'<>]+"
+        )
+        seen: set[str] = set()
+        urls: list[str] = []
+        for item in re.findall(pattern, page):
+            base = re.sub(r"/\d+x\d+\.(webp|jpg)$", "", item, flags=re.I)
+            hi_res = base + "/1280x960.jpg"
+            if hi_res in seen:
+                continue
+            seen.add(hi_res)
+            urls.append(hi_res)
+        if urls:
+            catalog[title.lower()] = urls
+    return catalog
+
+
+def car_matches_autoscout_title(car_name: str, autoscout_title: str) -> bool:
+    name = car_name.upper()
+    title = autoscout_title.upper()
+    if title in name or name.startswith(title):
+        return True
+    if "MINI" in name and "ONE" in name and "MINI" in title and "ONE" in title:
+        return True
+    if "SMART" in name and "SMART" in title:
+        return True
+    return False
+
+
+def fill_missing_images_from_autoscout24(cars: list[dict]) -> None:
+    catalog = fetch_autoscout24_listing_images()
+    if not catalog:
+        return
+    for car in cars:
+        if car.get("image_urls"):
+            continue
+        name = str(car.get("name", ""))
+        for as_title, urls in catalog.items():
+            if car_matches_autoscout_title(name, as_title):
+                car["image_urls"] = urls
+                car["imagenes_autoscout24"] = True
+                break
 
 
 def scrape_stock() -> list[dict]:
@@ -384,11 +448,14 @@ def download_images(cars: list[dict]) -> None:
         local_images = []
         for image_index, image_url in enumerate(car["image_urls"], 1):
             saved = False
+            request_headers = dict(HEADERS)
+            if "autoscout24.net" in image_url:
+                request_headers["Referer"] = AUTOSCOUT24_DEALER_URL
             for candidate in [normalize_image_url(image_url), image_url]:
                 ext = os.path.splitext(urlparse(candidate).path)[1] or ".jpg"
                 output = f"{car_dir}/foto-{image_index:03d}{ext}"
                 try:
-                    response = requests.get(candidate, headers=HEADERS, timeout=30)
+                    response = requests.get(candidate, headers=request_headers, timeout=30)
                     if response.status_code == 200 and response.content:
                         with open(output, "wb") as file:
                             file.write(response.content)
@@ -572,12 +639,12 @@ def update_index_html(cars: list[dict]) -> None:
 
 def main() -> None:
     cars = scrape_stock()
-    cars = [c for c in cars if str(c.get("name", "")).strip() not in DROP_STOCK_NAMES]
     for vehicle in cars:
         vehicle["ficha"] = fetch_car_ficha(vehicle["url"])
     enrich_missing_specs_from_public_sources(cars)
     cars.sort(key=price_for_sort, reverse=True)
     apply_swift_orientation_photos(cars)
+    fill_missing_images_from_autoscout24(cars)
     download_images(cars)
 
     with open("autocasion_stock.json", "w", encoding="utf-8") as file:
